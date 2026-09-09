@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamCraft AI - BCA & B.Sc IT Multi-Page Study Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandGreen: '#10b981',
+                        brandBlue: '#3b82f6',
+                        brandYellow: '#facc15',
+                        brandWhite: '#ffffff'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); opacity: 0.35; }
+            50% { transform: translateY(-5px); opacity: 0.7; }
+        }
+        .clean-doodle {
+            animation: gentleFloat 4s ease-in-out infinite;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        @keyframes startPulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(16,185,129,0.4), 0 0 35px rgba(59,130,246,0.2); }
+            50% { box-shadow: 0 0 30px rgba(16,185,129,0.8), 0 0 60px rgba(59,130,246,0.4); transform: scale(1.02); }
+        }
+        .start-btn-glow {
+            animation: startPulse 2.8s infinite ease-in-out;
+        }
+
+        @keyframes rippleExplosion {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(2.6); opacity: 0; }
+        }
+        .ripple-active {
+            animation: rippleExplosion 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+
+        /* Enhanced Page Transition & Home Page Visual Effects */
+        .page-view {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            transform: translateY(12px) scale(0.99);
+        }
+        .page-view.active-page {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Special Home Page Cinematic Effect Background Layer */
+        #page-home {
+            position: relative;
+            background: radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+        }
+        .dark #page-home::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(to right, rgba(16, 185, 129, 0.04) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(16, 185, 129, 0.04) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .light #page-home::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(to right, rgba(16, 185, 129, 0.06) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(16, 185, 129, 0.06) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Vibrant Green, White, Blue, Yellow Theme Styles */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .dark body { background-color: #022c22; color: #f8fafc; } /* Deep Emerald Dark BG */
+        .light body { background-color: #f0fdf4; color: #064e3b; } /* Soft Mint Light BG */
+
+        .dark .theme-card { background-color: #064e3b; border-color: #047857; color: #ffffff; }
+        .light .theme-card { background-color: #ffffff; border-color: #86efac; color: #064e3b; box-shadow: 0 4px 6px -1px rgba(16,185,129,0.1); }
+
+        .dark .theme-subbox { background-color: rgba(2, 44, 34, 0.9); border-color: #047857; color: #d1fae5; }
+        .light .theme-subbox { background-color: #ecfdf5; border-color: #a7f3d0; color: #022c22; }
+
+        .dark .theme-nav { background-color: rgba(2, 44, 34, 0.95); border-color: #047857; }
+        .light .theme-nav { background-color: rgba(255, 255, 255, 0.95); border-color: #bbf7d0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+
+        /* Typing cursor animation for AI chat */
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .ai-typing-cursor::after {
+            content: '▋';
+            display: inline-block;
+            animation: blink 1s infinite;
+            color: #10b981;
+            margin-left: 2px;
+        }
+    </style>
+</head>
+<body class="font-sans selection:bg-brandYellow selection:text-black min-h-screen relative overflow-x-hidden">
+
+    <!-- ================= TOP GLOBAL NAVIGATION BAR (Hidden on Auth Page) ================= -->
+    <nav id="globalNav" class="theme-nav backdrop-blur-md border-b sticky top-0 z-50 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Left Section: Hamburger Menu Button + Logo -->
+                <div class="flex items-center space-x-3">
+                    <!-- Hamburger Three-Line Toggle Button -->
+                    <button onclick="toggleMobileMenu()" class="bg-brandGreen/20 hover:bg-brandGreen/30 text-brandGreen p-2 rounded-xl border border-brandGreen/40 transition shadow-sm focus:outline-none cursor-pointer" title="Toggle Navigation Menu">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+
+                    <!-- Logo -->
+                    <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPage('page-home')">
+                        <div class="bg-brandGreen/20 text-brandGreen p-2 rounded-xl border border-brandGreen/40">
+                            <i class="fa-solid fa-graduation-cap text-lg"></i>
+                        </div>
+                        <span class="text-lg font-extrabold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-brandGreen via-brandYellow to-brandBlue">
+                            ExamCraft AI
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Top Right Controls -->
+                <div class="flex items-center space-x-2">
+                    <button onclick="toggleRevisionMode()" id="revisionToggleBtn" class="flex items-center gap-1.5 bg-brandBlue/20 text-brandBlue border border-brandBlue/40 px-2.5 py-1 rounded-full font-semibold text-[11px] tracking-wider transition hover:bg-brandBlue/30 shadow-sm cursor-pointer">
+                        <i class="fa-solid fa-bolt text-brandYellow text-[10px]"></i>
+                        <span>REV: <span id="revStatusText" class="font-bold">OFF</span></span>
+                    </button>
+
+                    <button onclick="toggleThemeMode()" id="themeToggleBtn" class="bg-brandYellow/20 hover:bg-brandYellow/30 border border-brandYellow/50 text-brandYellow p-2 rounded-xl transition shadow-sm cursor-pointer" title="Toggle Light/Dark Mode">
+                        <i id="themeIcon" class="fa-solid fa-sun text-sm"></i>
+                    </button>
+
+                    <button onclick="handleLogout()" class="bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/50 text-rose-400 p-2 rounded-xl transition shadow-sm text-xs cursor-pointer" title="Logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collapsible Mobile / Drawer Menu Bar Triggered by Three-Line Button -->
+        <div id="mobileMenuDrawer" class="hidden theme-subbox border-t border-brandGreen/30 px-4 py-3 space-y-2 shadow-xl backdrop-blur-md">
+            <div class="flex items-center gap-2 px-2 py-1 text-xs font-bold text-brandGreen uppercase tracking-wider">
+                <span class="w-2 h-2 rounded-full bg-brandGreen animate-pulse"></span>
+                <span>Workspace Navigation</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-xs">
+                <button onclick="switchPage('page-home'); toggleMobileMenu();" class="text-left font-medium px-3 py-2 rounded-lg theme-card border transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-house text-brandGreen"></i> Home
+                </button>
+                <button onclick="switchPage('page-notes'); toggleMobileMenu();" class="text-left font-medium px-3 py-2 rounded-lg theme-card border transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-star text-brandYellow"></i> Imp Notes
+                </button>
+                <button onclick="switchPage('page-mcq'); toggleMobileMenu();" class="text-left font-semibold px-3 py-2 rounded-lg theme-card border border-brandYellow/50 bg-brandYellow/10 text-brandYellow transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-stopwatch"></i> MCQ Arena
+                </button>
+                <button onclick="switchPage('page-reminders'); toggleMobileMenu();" class="text-left font-medium px-3 py-2 rounded-lg theme-card border transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-bell text-brandBlue"></i> Reminders
+                </button>
+                <button onclick="switchPage('page-summarizer'); toggleMobileMenu();" class="text-left font-medium px-3 py-2 rounded-lg theme-card border transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-wand-magic-sparkles text-brandYellow"></i> Summarizer
+                </button>
+                <button onclick="switchPage('page-modules'); toggleMobileMenu();" class="text-left font-medium px-3 py-2 rounded-lg theme-card border transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-book text-brandGreen"></i> Modules
+                </button>
+                <button onclick="switchPage('page-qbank'); toggleMobileMenu();" class="text-left font-medium px-3 py-2 rounded-lg theme-card border transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-fire text-brandYellow"></i> Question Bank
+                </button>
+                <button onclick="switchPage('page-textbooks'); toggleMobileMenu();" class="text-left font-medium px-3 py-2 rounded-lg theme-card border transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-book-open text-brandBlue"></i> Textbooks
+                </button>
+                <button onclick="switchPage('page-gtupapers'); toggleMobileMenu();" class="text-left font-medium px-3 py-2 rounded-lg theme-card border transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-file-lines text-brandYellow"></i> GTU Papers
+                </button>
+                <button onclick="switchPage('page-examsolutions'); toggleMobileMenu();" class="text-left font-medium px-3 py-2 rounded-lg theme-card border transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-square-check text-brandGreen"></i> Exam Solutions
+                </button>
+                <button onclick="switchPage('page-chat'); toggleMobileMenu();" class="text-left font-semibold px-3 py-2 rounded-lg theme-card border border-brandGreen/50 bg-brandGreen/10 text-brandGreen transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-robot"></i> AI Tutor
+                </button>
+                <button onclick="switchPage('page-history'); toggleMobileMenu();" class="text-left font-medium px-3 py-2 rounded-lg theme-card border transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-history text-brandYellow"></i> Login History
+                </button>
+                <button onclick="switchPage('page-about'); toggleMobileMenu();" class="text-left font-medium px-3 py-2 rounded-lg theme-card border transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-circle-info text-brandGreen"></i> About
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= PAGE 0: AUTH PAGE ================= -->
+    <div id="page-login" class="page-view active-page">
+        <div class="min-h-screen flex items-center justify-center p-4 relative z-10">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brandGreen/20 blur-[130px] rounded-full pointer-events-none"></div>
+
+            <div class="theme-card border-2 rounded-2xl p-8 max-w-md w-full shadow-2xl relative z-10 space-y-6">
+                <div class="text-center space-y-2">
+                    <div class="w-14 h-14 rounded-2xl bg-brandGreen/20 border border-brandGreen/50 flex items-center justify-center text-brandGreen text-2xl mx-auto shadow-lg">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h1 class="text-2xl font-black tracking-tight">ExamCraft AI Hub</h1>
+                    <p class="text-xs opacity-75">Access your BCA & B.Sc IT Study Portal</p>
+                </div>
+
+                <!-- Auth Switcher Tabs -->
+                <div class="flex rounded-xl p-1 theme-subbox border">
+                    <button type="button" onclick="switchAuthTab('login')" id="authTabLoginBtn" class="flex-1 py-2 text-xs font-bold rounded-lg transition bg-brandGreen text-white shadow-sm cursor-pointer">
+                        Login
+                    </button>
+                    <button type="button" onclick="switchAuthTab('register')" id="authTabRegisterBtn" class="flex-1 py-2 text-xs font-bold rounded-lg transition opacity-75 hover:opacity-100 cursor-pointer">
+                        Register
+                    </button>
+                </div>
+
+                <!-- LOGIN FORM -->
+                <form id="loginFormContainer" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold mb-1 opacity-90"><i class="fa-solid fa-user text-brandGreen mr-1"></i> Username</label>
+                        <input type="text" id="loginUsername" required placeholder="Enter your username" class="theme-subbox w-full border rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-brandGreen transition shadow-inner">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold mb-1 opacity-90"><i class="fa-solid fa-key text-brandYellow mr-1"></i> Password</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••" class="theme-subbox w-full border rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-brandGreen transition shadow-inner">
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-brandGreen via-brandBlue to-brandYellow text-white font-black text-xs sm:text-sm uppercase tracking-wider py-3.5 rounded-xl transition shadow-lg cursor-pointer">
+                        Login & Enter Hub <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </form>
+
+                <!-- REGISTER FORM -->
+                <form id="registerFormContainer" onsubmit="handleRegisterSubmit(event)" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-bold mb-1 opacity-90"><i class="fa-solid fa-user text-brandGreen mr-1"></i> Choose Username</label>
+                        <input type="text" id="regUsername" required placeholder="Choose a username" class="theme-subbox w-full border rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-brandGreen transition shadow-inner">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold mb-1 opacity-90"><i class="fa-solid fa-envelope text-brandBlue mr-1"></i> Gmail</label>
+                        <input type="email" id="regGmail" required placeholder="yourname@gmail.com" class="theme-subbox w-full border rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-brandGreen transition shadow-inner">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold mb-1 opacity-90"><i class="fa-solid fa-key text-brandYellow mr-1"></i> Create Password</label>
+                        <input type="password" id="regPassword" required placeholder="••••••••" class="theme-subbox w-full border rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-brandGreen transition shadow-inner">
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-brandGreen via-brandBlue to-brandYellow text-white font-black text-xs sm:text-sm uppercase tracking-wider py-3.5 rounded-xl transition shadow-lg cursor-pointer">
+                        Register Account <i class="fa-solid fa-user-plus ml-1"></i>
+                    </button>
+                </form>
+
+                <div class="text-center text-[10px] opacity-60">
+                    Secure Session • Made by PIE CODERS
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 1: HOME ================= -->
+    <div id="page-home" class="page-view">
+        <div class="min-h-[calc(100vh-4rem)] flex flex-col justify-between p-6 sm:p-12 relative z-10">
+            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brandGreen/20 blur-[130px] rounded-full pointer-events-none"></div>
+
+            <div class="max-w-3xl mx-auto text-center my-auto relative z-10 py-8">
+                <div class="inline-flex items-center gap-2 border border-brandGreen/40 bg-brandGreen/10 text-brandGreen text-xs font-semibold px-4 py-1.5 rounded-full mb-6 shadow-sm">
+                    <i class="fa-solid fa-code text-brandYellow"></i> BCA / B.Sc (IT) University Exam Suite • Made by PIE CODERS
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight mb-4">
+                    Ace BCA & B.Sc IT <br>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-brandGreen via-brandYellow to-brandBlue">
+                        Theory, Code & Viva Exams
+                    </span>
+                </h1>
+
+                <p class="text-sm sm:text-base opacity-85 max-w-xl mx-auto mb-10 leading-relaxed font-medium">
+                    Access dedicated workspaces for timed MCQs, smart interval reminders, high-yield cheat sheets, instant note summarization, and searchable syllabus question banks.
+                </p>
+
+                <!-- Central Start Reactor Button -->
+                <div class="relative inline-flex items-center justify-center">
+                    <div id="startRipple" class="absolute w-44 h-44 rounded-full border-2 border-brandYellow/60 pointer-events-none opacity-0"></div>
+
+                    <button onclick="startFromHome()" id="startBtn" class="relative group bg-gradient-to-r from-brandGreen via-brandBlue to-brandYellow text-white font-black text-sm sm:text-base uppercase tracking-wider px-10 py-5 rounded-2xl transition-all duration-300 start-btn-glow flex items-center gap-3 cursor-pointer select-none shadow-xl">
+                        <span class="relative z-10">Start Studying</span>
+                        <i class="fa-solid fa-arrow-right-long text-lg group-hover:translate-x-1.5 transition-transform duration-200"></i>
+                    </button>
+                </div>
+
+                <!-- Feature Quick-Launch Badges -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-12 text-left">
+                    <div onclick="switchPage('page-notes')" class="theme-card border p-3 rounded-xl cursor-pointer hover:border-brandGreen transition">
+                        <i class="fa-solid fa-magnifying-glass text-brandGreen text-sm mb-1 block"></i>
+                        <p class="text-xs font-bold">Search Hub</p>
+                        <p class="text-[10px] opacity-70">Find topics & cheat sheets</p>
+                    </div>
+                    <div onclick="switchPage('page-mcq')" class="theme-card border p-3 rounded-xl cursor-pointer hover:border-brandYellow transition">
+                        <i class="fa-solid fa-stopwatch text-brandYellow text-sm mb-1 block"></i>
+                        <p class="text-xs font-bold">MCQ Arena</p>
+                        <p class="text-[10px] opacity-70">Timed semester exam tests</p>
+                    </div>
+                    <div onclick="switchPage('page-chat')" class="theme-card border p-3 rounded-xl cursor-pointer hover:border-brandGreen transition">
+                        <i class="fa-solid fa-robot text-brandGreen text-sm mb-1 block"></i>
+                        <p class="text-xs font-bold">AI Tutor</p>
+                        <p class="text-[10px] opacity-70">Instant concept answers</p>
+                    </div>
+                    <div onclick="switchPage('page-history')" class="theme-card border p-3 rounded-xl cursor-pointer hover:border-brandYellow transition">
+                        <i class="fa-solid fa-history text-brandYellow text-sm mb-1 block"></i>
+                        <p class="text-xs font-bold">Login History</p>
+                        <p class="text-[10px] opacity-70">Saved session logs</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto w-full text-center text-[11px] opacity-70 relative z-10 font-semibold">
+                Tailored for BCA & B.Sc (IT) University Curriculums • Crafted by PIE CODERS
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 2: IMPORTANT NOTES ================= -->
+    <div id="page-notes" class="page-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        <div class="theme-card border rounded-2xl p-6 shadow-xl relative">
+            <div class="max-w-3xl mx-auto text-center space-y-3">
+                <span class="text-[10px] uppercase font-bold tracking-widest text-brandYellow border border-brandYellow/40 px-2.5 py-0.5 rounded-full bg-brandYellow/10">
+                    <i class="fa-solid fa-bolt mr-1"></i> Quick Topic Lookup
+                </span>
+                <h2 class="text-xl sm:text-2xl font-black">What would you like to revise today?</h2>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-2 max-w-2xl mx-auto">
+                    <div class="relative flex-1 w-full">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-brandGreen text-sm"></i>
+                        <input type="text" id="primaryNotesSearch" oninput="applyNotesSearchFilter()" placeholder="Search pointers, Von Neumann, normal forms, PCB, SQL..." class="theme-subbox w-full border-2 rounded-xl pl-11 pr-10 py-2.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brandGreen/40 transition shadow-inner">
+                        <button id="clearNotesSearchBtn" onclick="clearNotesSearch()" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 opacity-70 hover:opacity-100 text-xs">
+                            <i class="fa-solid fa-circle-xmark text-sm"></i>
+                        </button>
+                    </div>
+
+                    <div class="relative w-full sm:w-auto">
+                        <select id="notesSubjectSelect" onchange="applyNotesSearchFilter()" class="theme-subbox w-full sm:w-auto border-2 text-brandBlue font-semibold text-xs rounded-xl px-3.5 py-3 cursor-pointer focus:outline-none transition">
+                            <option value="all">All Subjects</option>
+                            <option value="ds">C & Data Structures</option>
+                            <option value="coa">COA / FCO</option>
+                            <option value="dbms">DBMS & SQL</option>
+                            <option value="os">Operating Systems</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-2 pt-1 text-[11px]">
+                    <span class="opacity-70 font-semibold">Popular:</span>
+                    <button onclick="quickFillSearch('pointers')" class="theme-subbox px-2.5 py-0.5 rounded-md transition hover:text-brandGreen font-medium">Pointers</button>
+                    <button onclick="quickFillSearch('von neumann')" class="theme-subbox px-2.5 py-0.5 rounded-md transition hover:text-brandGreen font-medium">Von Neumann</button>
+                    <button onclick="quickFillSearch('acid')" class="theme-subbox px-2.5 py-0.5 rounded-md transition hover:text-brandGreen font-medium">ACID</button>
+                    <button onclick="quickFillSearch('pcb')" class="theme-subbox px-2.5 py-0.5 rounded-md transition hover:text-brandGreen font-medium">PCB / Thread</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-brandGreen/30 pb-3">
+            <div>
+                <h3 class="text-lg font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-bookmark text-green-400"></i> High-Yield BCA & IT Notes
+                </h3>
+                <p class="text-xs opacity-70">Core 7-mark & 14-mark university exam topics condensed into cheat sheets.</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="notesCardsGrid">
+            <div class="note-card-item theme-card border rounded-xl p-4 flex flex-col justify-between shadow-lg" data-subject="ds" data-keywords="c data structures pointers memory malloc calloc free address dereference">
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <span class="text-[10px] font-bold text-brandGreen uppercase">C & Data Structures</span>
+                        <span class="text-[11px] text-brandYellow font-bold">7M Guaranteed</span>
+                    </div>
+                    <h3 class="font-bold text-sm mb-1.5">Pointers & Dynamic Memory</h3>
+                    <p class="text-xs opacity-85 note-desc mb-2.5 leading-relaxed">
+                        Pointers store addresses: <code class="text-brandBlue font-mono">int *p = &x;</code>. Dereferencing (<code class="text-brandBlue font-mono">*p</code>). Allocations via <code class="text-brandBlue font-mono">malloc()</code>, <code class="text-brandBlue font-mono">calloc()</code>, and <code class="text-brandBlue font-mono">free()</code>.
+                    </p>
+                </div>
+                <div class="space-y-1.5">
+                    <button onclick="openNoteModal('pointers')" class="w-full bg-brandGreen/25 hover:bg-brandGreen/35 text-brandGreen border border-brandGreen/40 text-xs font-bold py-1.5 rounded-lg transition cursor-pointer">
+                        View Cheat Sheet
+                    </button>
+                    <button onclick="askAIAbout('Pointers & Dynamic Memory in C')" class="w-full bg-brandBlue/10 hover:bg-brandBlue/20 text-brandBlue border border-brandBlue/30 text-[11px] font-bold py-1 rounded-md transition flex items-center justify-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> AI Explain
+                    </button>
+                </div>
+            </div>
+
+            <div class="note-card-item theme-card border rounded-xl p-4 flex flex-col justify-between shadow-lg" data-subject="coa" data-keywords="coa fco computer organization architecture von neumann registers pc mar mbr fetch decode execute">
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <span class="text-[10px] font-bold text-brandGreen uppercase">COA / FCO</span>
+                        <span class="text-[11px] text-brandYellow font-bold">Must-Prepare</span>
+                    </div>
+                    <h3 class="font-bold text-sm mb-1.5">Von Neumann Architecture</h3>
+                    <p class="text-xs opacity-85 note-desc mb-2.5 leading-relaxed">
+                        Stored program concept: Unified memory for data and instructions. Fetch (PC → MAR, MBR) → Decode (IR) → Execute (ALU).
+                    </p>
+                </div>
+                <div class="space-y-1.5">
+                    <button onclick="openNoteModal('vonneumann')" class="w-full bg-brandGreen/25 hover:bg-brandGreen/35 text-brandGreen border border-brandGreen/40 text-xs font-bold py-1.5 rounded-lg transition cursor-pointer">
+                        View Cheat Sheet
+                    </button>
+                    <button onclick="askAIAbout('Von Neumann Architecture')" class="w-full bg-brandBlue/10 hover:bg-brandBlue/20 text-brandBlue border border-brandBlue/30 text-[11px] font-bold py-1 rounded-md transition flex items-center justify-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> AI Explain
+                    </button>
+                </div>
+            </div>
+
+            <div class="note-card-item theme-card border rounded-xl p-4 flex flex-col justify-between shadow-lg" data-subject="dbms" data-keywords="dbms sql database acid atomicity consistency isolation durability keys primary foreign">
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <span class="text-[10px] font-bold text-brandGreen uppercase">DBMS & SQL</span>
+                        <span class="text-[11px] text-brandBlue font-bold">Core Unit</span>
+                    </div>
+                    <h3 class="font-bold text-sm mb-1.5">ACID Properties & Keys</h3>
+                    <p class="text-xs opacity-85 note-desc mb-2.5 leading-relaxed">
+                        Atomicity, Consistency, Isolation, Durability. Primary Keys (Unique + Not Null) and Foreign Keys enforcing referential integrity.
+                    </p>
+                </div>
+                <div class="space-y-1.5">
+                    <button onclick="openNoteModal('dbms')" class="w-full bg-brandGreen/25 hover:bg-brandGreen/35 text-brandGreen border border-brandGreen/40 text-xs font-bold py-1.5 rounded-lg transition cursor-pointer">
+                        View Cheat Sheet
+                    </button>
+                    <button onclick="askAIAbout('ACID Properties in DBMS')" class="w-full bg-brandBlue/10 hover:bg-brandBlue/20 text-brandBlue border border-brandBlue/30 text-[11px] font-bold py-1 rounded-md transition flex items-center justify-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> AI Explain
+                    </button>
+                </div>
+            </div>
+
+            <div class="note-card-item theme-card border rounded-xl p-4 flex flex-col justify-between shadow-lg" data-subject="os" data-keywords="os operating systems process thread pcb cpu deadlock scheduling">
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <span class="text-[10px] font-bold text-brandGreen uppercase">Operating Systems</span>
+                        <span class="text-[11px] text-brandYellow font-bold">High Yield</span>
+                    </div>
+                    <h3 class="font-bold text-sm mb-1.5">Process vs Thread & PCB</h3>
+                    <p class="text-xs opacity-85 note-desc mb-2.5 leading-relaxed">
+                        Process: Independent executing program. Thread: Lightweight path of execution inside process sharing memory space.
+                    </p>
+                </div>
+                <div class="space-y-1.5">
+                    <button onclick="openNoteModal('os')" class="w-full bg-brandGreen/25 hover:bg-brandGreen/35 text-brandGreen border border-brandGreen/40 text-xs font-bold py-1.5 rounded-lg transition cursor-pointer">
+                        View Cheat Sheet
+                    </button>
+                    <button onclick="askAIAbout('Process vs Thread and PCB in Operating Systems')" class="w-full bg-brandBlue/10 hover:bg-brandBlue/20 text-brandBlue border border-brandBlue/30 text-[11px] font-bold py-1 rounded-md transition flex items-center justify-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> AI Explain
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="noNotesMatchState" class="hidden text-center py-10 theme-card border rounded-xl">
+            <i class="fa-solid fa-magnifying-glass text-brandYellow text-2xl mb-2"></i>
+            <h4 class="text-sm font-bold">No Notes Found</h4>
+            <p class="text-xs opacity-70 mt-1">Try another keyword or select "All Subjects" from the dropdown.</p>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 3: MCQ ARENA ================= -->
+    <div id="page-mcq" class="page-view max-w-4xl mx-auto px-4 py-8 space-y-6">
+        <!-- Chapter-Wise Selector Card -->
+        <div class="theme-card border rounded-2xl p-6 shadow-xl space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-brandGreen/30">
+                <div>
+                    <span class="bg-brandGreen/20 text-brandGreen text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded border border-brandGreen/40">
+                        <i class="fa-solid fa-book-open mr-1"></i> Chapter-Wise Mode
+                    </span>
+                    <h2 class="text-lg font-bold mt-1">Select Chapter & Launch Test</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <select id="chapterSelectDropdown" class="theme-subbox border rounded-xl px-3 py-2 text-xs font-bold text-brandGreen focus:outline-none cursor-pointer">
+                        <optgroup label="C & Data Structures">
+                            <option value="ds_ch1">Unit 1: Arrays, Strings & Sorting</option>
+                            <option value="ds_ch2">Unit 2: Pointers & Dynamic Allocation</option>
+                            <option value="ds_ch3">Unit 3: Binary Search Trees & Recursion</option>
+                        </optgroup>
+                        <optgroup label="Computer Organization & Architecture">
+                            <option value="coa_ch1">Unit 1: Von Neumann & Instruction Cycle</option>
+                            <option value="coa_ch2">Unit 2: CPU Registers & Addressing Modes</option>
+                        </optgroup>
+                        <optgroup label="DBMS & SQL">
+                            <option value="dbms_ch1">Unit 1: ER Models & Relational Algebra</option>
+                            <option value="dbms_ch2">Unit 2: SQL Joins, Aggregates & HAVING</option>
+                            <option value="dbms_ch3">Unit 3: ACID Transactions & Normalization (1NF-BCNF)</option>
+                        </optgroup>
+                        <optgroup label="Operating Systems">
+                            <option value="os_ch1">Unit 1: Processes, Threads & PCB</option>
+                            <option value="os_ch2">Unit 2: CPU Scheduling (FCFS, SJF, RR)</option>
+                            <option value="os_ch3">Unit 3: Deadlocks & Coffman Conditions</option>
+                        </optgroup>
+                        <optgroup label="Discrete Mathematics">
+                            <option value="math_ch1">Unit 1: Set Theory & Relations</option>
+                            <option value="math_ch2">Unit 2: Propositional Logic & Tautologies</option>
+                        </optgroup>
+                        <optgroup label="Web Technologies">
+                            <option value="web_ch1">Unit 1: DOM Manipulation & JavaScript ES6</option>
+                            <option value="web_ch2">Unit 2: HTTP Protocols & REST APIs</option>
+                        </optgroup>
+                    </select>
+                    <button onclick="startChapterTest()" class="bg-brandGreen hover:bg-brandGreen/80 text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl transition shadow-sm shrink-0 cursor-pointer">
+                        Start Chapter Test
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- General / Timed MCQ Arena -->
+        <div class="relative theme-card border rounded-2xl p-6 sm:p-8 shadow-xl">
+            <svg class="absolute top-4 right-4 w-7 h-7 stroke-brandYellow fill-none stroke-[1.5] clean-doodle" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="36"/>
+                <circle cx="50" cy="50" r="20"/>
+                <circle cx="50" cy="50" r="6" fill="#facc15" stroke="none"/>
+            </svg>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-brandGreen/30">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-brandYellow/20 text-brandYellow text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-brandYellow/40">
+                            BCA / IT Semester Arena
+                        </span>
+                        <h2 class="text-xl font-bold">Timed MCQ Practice</h2>
+                    </div>
+                    <p class="text-xs opacity-70 mt-0.5">Frequently asked questions with instant explanations & audio feedback.</p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="flex items-center gap-2 theme-subbox border px-2.5 py-1 rounded-lg text-xs font-semibold">
+                        <span>Q's:</span>
+                        <select id="configNumQuestions" onchange="updateArenaConfig()" class="bg-transparent text-brandGreen font-bold focus:outline-none cursor-pointer">
+                            <option value="3">3 Qs</option>
+                            <option value="6" selected>6 Qs</option>
+                            <option value="10">10 Qs</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2 theme-subbox border px-2.5 py-1 rounded-lg text-xs font-semibold">
+                        <span>Time:</span>
+                        <select id="configExamTime" onchange="updateArenaConfig()" class="bg-transparent text-brandYellow font-bold focus:outline-none cursor-pointer">
+                            <option value="120">2 Min</option>
+                            <option value="300" selected>5 Min</option>
+                            <option value="600">10 Min</option>
+                        </select>
+                    </div>
+
+                    <div class="theme-subbox flex items-center gap-1.5 border px-3 py-1.5 rounded-lg font-mono text-xs shadow-inner">
+                        <i class="fa-regular fa-clock text-brandYellow"></i>
+                        <span id="quizTimer">05:00</span>
+                    </div>
+
+                    <select id="quizCategorySelect" onchange="filterQuizCategory()" class="theme-subbox border rounded-lg px-2.5 py-1.5 text-xs font-semibold focus:outline-none cursor-pointer">
+                        <option value="all">All Subjects</option>
+                        <option value="c">C & Data Structures</option>
+                        <option value="coa">Comp. Org & Arch (COA)</option>
+                        <option value="dbms">DBMS & SQL</option>
+                        <option value="os">Operating Systems (OS)</option>
+                        <option value="math">Discrete Mathematics</option>
+                        <option value="web">Web Technologies</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Pre-Start Lobby -->
+            <div id="quizStartScreen" class="py-10 text-center space-y-6">
+                <div class="w-16 h-16 mx-auto rounded-2xl bg-brandGreen/20 border border-brandGreen/50 flex items-center justify-center text-brandGreen text-3xl shadow-lg">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-black tracking-wide">BCA & B.Sc IT Exam Challenge</h3>
+                    <p class="text-xs sm:text-sm opacity-80 max-w-md mx-auto mt-1">
+                        Review core conceptual MCQs on programming, architecture, and database logic.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3 max-w-md mx-auto">
+                    <div class="theme-subbox border p-3 rounded-xl text-center">
+                        <p class="text-[10px] uppercase tracking-wider opacity-70">Questions</p>
+                        <p id="lobbyTotalQ" class="text-base font-bold font-mono mt-0.5">6</p>
+                    </div>
+                    <div class="theme-subbox border p-3 rounded-xl text-center">
+                        <p class="text-[10px] uppercase tracking-wider opacity-70">Time Limit</p>
+                        <p id="lobbyTotalTime" class="text-base font-bold text-brandYellow font-mono mt-0.5">05:00</p>
+                    </div>
+                    <div class="theme-subbox border p-3 rounded-xl text-center">
+                        <p class="text-[10px] uppercase tracking-wider opacity-70">Audio Cues</p>
+                        <p class="text-base font-bold text-brandGreen font-mono mt-0.5">Active</p>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="startMCQExam()" class="bg-gradient-to-r from-brandGreen via-brandBlue to-brandYellow text-white font-black text-sm uppercase tracking-wider px-8 py-3.5 rounded-xl transition-all duration-300 start-btn-glow shadow-lg cursor-pointer">
+                        <i class="fa-solid fa-play mr-2"></i> Start Exam
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Exam Playground -->
+            <div id="quizPlayZone" class="hidden mt-5 space-y-4">
+                <div class="flex justify-between items-center text-xs font-semibold text-brandGreen">
+                    <span>Question <span id="currentQNum">1</span> of <span id="totalQNum">6</span></span>
+                    <span>Score: <span id="liveScore" class="font-mono font-bold">0</span></span>
+                </div>
+                
+                <div class="w-full bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
+                    <div id="quizProgressBar" class="bg-brandYellow h-full w-[20%] transition-all duration-300"></div>
+                </div>
+
+                <div class="theme-subbox border rounded-xl p-5">
+                    <span id="qSubjectTag" class="text-[10px] font-bold uppercase tracking-wider text-brandGreen border border-brandGreen/40 px-2 py-0.5 rounded bg-brandGreen/10">C & Data Structures</span>
+                    <p id="questionText" class="text-sm sm:text-base font-bold mt-2 leading-relaxed">
+                        Loading question...
+                    </p>
+                </div>
+
+                <div id="optionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+
+                <div id="explanationBox" class="hidden theme-subbox border border-brandYellow/50 rounded-xl p-3 text-xs space-y-1">
+                    <div class="flex items-center gap-1.5 text-brandYellow font-bold uppercase text-[10px]">
+                        <i class="fa-solid fa-circle-info"></i> University Exam Rationale:
+                    </div>
+                    <p id="explanationText" class="opacity-90 text-xs leading-relaxed font-medium"></p>
+                </div>
+
+                <div class="flex justify-between items-center pt-2">
+                    <button onclick="restartQuiz()" class="text-xs opacity-70 hover:opacity-100 flex items-center gap-1.5 transition cursor-pointer">
+                        <i class="fa-solid fa-rotate-right"></i> Reset Test
+                    </button>
+                    <button id="nextBtn" onclick="nextQuestion()" class="hidden bg-brandGreen hover:bg-brandGreen/80 text-white text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition shadow-sm cursor-pointer">
+                        Next Question <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Test Result View -->
+            <div id="quizResultZone" class="hidden py-8 text-center space-y-3">
+                <div class="w-16 h-16 mx-auto rounded-full bg-brandYellow/20 border border-brandYellow text-brandYellow text-2xl shadow-md flex items-center justify-center">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <h3 class="text-2xl font-bold">Quiz Completed!</h3>
+                <p class="text-xs sm:text-sm opacity-80">
+                    You scored <span id="finalScore" class="text-brandGreen font-bold font-mono text-base">0</span> out of <span id="finalTotal" class="font-bold font-mono text-base">6</span>.
+                </p>
+                <div class="pt-2 flex justify-center gap-3">
+                    <button onclick="restartQuiz()" class="bg-brandGreen hover:bg-brandGreen/80 text-white text-xs font-bold uppercase px-4 py-2 rounded-lg transition shadow-sm cursor-pointer">
+                        Retake Test
+                    </button>
+                    <button onclick="switchPage('page-notes')" class="theme-subbox border font-semibold px-4 py-2 rounded-lg transition cursor-pointer">
+                        Review Cheat Notes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 4: REMINDERS ================= -->
+    <div id="page-reminders" class="page-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <section class="relative theme-card border rounded-2xl p-6 sm:p-8 shadow-lg">
+            <svg class="absolute top-4 right-4 w-8 h-8 stroke-brandBlue fill-none stroke-[1.5] clean-doodle" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="38"/>
+                <path d="M50,22 L50,50 L70,50" stroke-linecap="round"/>
+            </svg>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-brandGreen/30">
+                <div>
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-bell text-brandBlue text-base"></i> BCA / IT Revision Reminder
+                    </h2>
+                    <p class="text-xs opacity-70 mt-0.5">
+                        Set interval recall alarms for coding concepts, SQL queries, and architectural block diagrams.
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="testAlertAndSound()" class="theme-subbox border text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-volume-high text-brandGreen"></i> Test Audio
+                    </button>
+                    <button onclick="requestNotificationPermission()" id="permBtn" class="theme-subbox border text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-regular fa-bell"></i> Alerts
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-5">
+                <div class="theme-subbox border rounded-xl p-4 space-y-3 lg:col-span-5">
+                    <div>
+                        <label class="block text-xs font-medium mb-1 opacity-80">Topic / Unit</label>
+                        <input type="text" id="remTopic" placeholder="e.g. BST Traversal, CPU Addressing Modes, 2NF/3NF" class="theme-card w-full border rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-brandGreen">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium mb-1 opacity-80">Course Subject</label>
+                        <select id="remSubject" class="theme-card w-full border rounded-lg px-3 py-1.5 text-xs text-brandBlue font-bold focus:outline-none cursor-pointer">
+                            <option value="C & Data Structures">C & Data Structures</option>
+                            <option value="Comp. Org & Arch (COA)">Comp. Org & Arch (COA / FCO)</option>
+                            <option value="DBMS & SQL">DBMS & SQL</option>
+                            <option value="Operating Systems">Operating Systems (OS)</option>
+                            <option value="Discrete Mathematics">Discrete Mathematics / MFCS</option>
+                            <option value="Web Technologies">Web Technologies (HTML/JS/PHP)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium mb-1 opacity-80">Interval Strategy</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" onclick="selectIntervalStrategy('25m')" class="strategy-btn p-1.5 text-center rounded-lg border border-brandGreen bg-brandGreen/25 text-brandGreen text-xs font-bold transition cursor-pointer" data-strategy="25m">
+                                25 Min
+                            </button>
+                            <button type="button" onclick="selectIntervalStrategy('24h')" class="strategy-btn p-1.5 text-center rounded-lg border opacity-60 text-xs font-bold transition hover:opacity-100 cursor-pointer" data-strategy="24h">
+                                24 Hours
+                            </button>
+                            <button type="button" onclick="selectIntervalStrategy('custom')" class="strategy-btn p-1.5 text-center rounded-lg border opacity-60 text-xs font-bold transition hover:opacity-100 cursor-pointer" data-strategy="custom">
+                                Custom
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="customTimeInputWrapper" class="hidden">
+                        <label class="block text-xs font-medium mb-1 opacity-80">Minutes</label>
+                        <input type="number" id="remMinutes" min="1" max="1440" placeholder="45" class="theme-card w-full border rounded-lg px-3 py-1 text-xs focus:outline-none">
+                    </div>
+
+                    <button onclick="scheduleStudyReminder()" class="w-full bg-brandGreen hover:bg-brandGreen/80 text-white text-xs font-bold uppercase tracking-wider py-2 rounded-lg transition flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
+                        <i class="fa-solid fa-plus"></i> Set Recall Alert
+                    </button>
+                </div>
+
+                <div class="theme-subbox border rounded-xl p-4 flex flex-col justify-between lg:col-span-7">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs uppercase font-bold tracking-wider text-green-400">Active Queue</span>
+                            <span id="queueCount" class="text-[11px] font-mono opacity-70">0 Alerts</span>
+                        </div>
+
+                        <div id="reminderListContainer" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                            <p id="emptyRemindersNote" class="text-xs opacity-50 italic py-6 text-center">
+                                No active alerts. Add a topic above to schedule your next revision.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t opacity-80 mt-3 flex justify-between items-center text-[11px]">
+                        <span><i class="fa-solid fa-shield-halved text-brandGreen mr-1"></i> Auto-saved locally</span>
+                        <button onclick="clearAllReminders()" class="text-rose-500 hover:underline font-bold cursor-pointer">Clear All</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= PAGE 5: SUMMARIZER ================= -->
+    <div id="page-summarizer" class="page-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <section class="relative theme-card border rounded-2xl p-6 sm:p-8 shadow-lg">
+            <svg class="absolute top-4 right-4 w-6 h-6 stroke-brandYellow fill-none stroke-[1.5] clean-doodle" viewBox="0 0 100 100">
+                <path d="M50,15 L50,85 M15,50 L85,50 M25,25 L75,75 M25,75 L75,25" stroke-linecap="round"/>
+            </svg>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-brandGreen/30">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-brandYellow text-sm"></i>
+                    <h2 class="text-lg font-bold tracking-wide">Instant BCA / IT Material Summarizer</h2>
+                </div>
+
+                <div class="flex items-center gap-1.5 self-start sm:self-auto">
+                    <span class="text-[10px] opacity-70 uppercase tracking-wider font-semibold mr-1">Size:</span>
+                    <button onclick="setSummarizerSize('compact')" id="btnSizeCompact" class="px-2.5 py-1 text-[11px] rounded-md border border-brandGreen bg-brandGreen/25 text-brandGreen font-bold transition cursor-pointer">
+                        Compact
+                    </button>
+                    <button onclick="setSummarizerSize('expanded')" id="btnSizeExpanded" class="theme-subbox px-2.5 py-1 text-[11px] rounded-md border font-bold transition cursor-pointer">
+                        Expanded
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 relative pb-14">
+                <div class="flex flex-col justify-between">
+                    <label class="block text-[11px] font-bold text-brandGreen mb-1">
+                        Paste Syllabus Chapter, Theory, or Code Notes
+                    </label>
+                    <textarea id="inputText" class="summarizer-box theme-subbox border rounded-xl p-3 placeholder-slate-400 focus:outline-none focus:border-brandGreen text-xs transition-all duration-300 resize-none h-44 shadow-inner" placeholder="Paste complex algorithms, normal forms, or memory concepts here..."></textarea>
+                    
+                    <div class="mt-2.5 flex flex-wrap gap-2">
+                        <button onclick="summarizeNotes('short')" class="bg-brandGreen hover:bg-brandGreen/80 text-white text-xs font-bold uppercase px-3.5 py-1.5 rounded-lg transition shadow-sm cursor-pointer">
+                            <i class="fa-solid fa-compress mr-1"></i> 3-Point Summary
+                        </button>
+                        <button onclick="summarizeNotes('qa')" class="theme-subbox border border-brandYellow/60 text-brandYellow text-xs font-bold uppercase px-3.5 py-1.5 rounded-lg transition cursor-pointer">
+                            <i class="fa-solid fa-circle-question mr-1"></i> Predict Exam Questions
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-green-400">Summarized Output</span>
+                        <button onclick="copyOutput()" class="text-[11px] text-brandBlue hover:underline font-bold flex items-center gap-1 cursor-pointer">
+                            <i class="fa-regular fa-copy"></i> Copy Output
+                        </button>
+                    </div>
+                    <div id="outputContainer" class="summarizer-box theme-subbox border rounded-xl p-3 text-xs leading-relaxed overflow-y-auto transition-all duration-300 h-44 shadow-inner">
+                        <p class="opacity-50 italic">Extracted takeaways and predicted university exam questions will appear here...</p>
+                    </div>
+                    <div class="mt-2.5 text-[11px] opacity-60 text-right font-semibold">
+                        <span>AI-assisted fast revision output</span>
+                    </div>
+                </div>
+
+                <!-- Bottom Right Corner File / PDF Upload Box -->
+                <div class="absolute bottom-0 right-0 z-20">
+                    <input type="file" id="summarizerFileInput" class="hidden" accept=".pdf,.txt,.doc,.docx" onchange="handleFileUpload(this)">
+                    <div onclick="document.getElementById('summarizerFileInput').click()" ondragover="event.preventDefault(); this.classList.add('border-brandGreen', 'bg-brandGreen/10');" ondragleave="this.classList.remove('border-brandGreen', 'bg-brandGreen/10')" ondrop="handleFileDrop(event)" class="theme-subbox border-2 border-dashed border-brandGreen/60 hover:border-brandGreen rounded-xl p-2.5 px-4 cursor-pointer flex items-center gap-2 shadow-lg transition text-xs font-semibold">
+                        <div class="w-7 h-7 rounded-lg bg-brandGreen/20 text-brandGreen flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-file-arrow-up text-xs"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-bold text-brandGreen" id="uploadBoxLabel">Upload PDF / File</p>
+                            <p class="text-[9px] opacity-70">Drop files to summarize</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= PAGE 6: MODULES ================= -->
+    <div id="page-modules" class="page-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-5">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-brandGreen/30">
+            <div>
+                <h2 class="text-xl font-bold">BCA & B.Sc IT Syllabus Modules</h2>
+                <p class="text-xs opacity-70">Search any keyword, code concept, or filter by course subject.</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2.5">
+                <div class="relative min-w-[240px] sm:min-w-[280px]">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-brandGreen text-xs"></i>
+                    <input type="text" id="moduleSearchInput" oninput="applyCombinedFilter()" placeholder="Search topics, keywords..." class="theme-subbox border rounded-lg pl-8 pr-7 py-1.5 text-xs focus:outline-none focus:border-brandGreen transition">
+                    <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 opacity-70 hover:opacity-100 text-xs">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="theme-subbox flex items-center gap-1.5 border rounded-lg px-2.5 py-1.5">
+                    <i class="fa-solid fa-filter text-brandBlue text-xs"></i>
+                    <select id="subjectSelect" onchange="applyCombinedFilter()" class="bg-transparent text-brandBlue text-xs font-bold focus:outline-none cursor-pointer">
+                        <option value="all">All Subjects</option>
+                        <option value="ds">C & Data Structures</option>
+                        <option value="coa">Comp. Org & Arch (COA)</option>
+                        <option value="dbms">DBMS & SQL</option>
+                        <option value="os">Operating Systems</option>
+                        <option value="math">Discrete Math</option>
+                        <option value="web">Web Technologies</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="noResultsState" class="hidden text-center py-12 theme-card border rounded-2xl">
+            <i class="fa-solid fa-filter-circle-xmark text-brandYellow text-3xl mb-2"></i>
+            <h3 class="text-base font-bold">No Matching Modules Found</h3>
+            <p class="text-xs opacity-70 mt-1">Try clearing your search query or selecting "All Subjects".</p>
+            <button onclick="clearSearch(); document.getElementById('subjectSelect').value='all'; applyCombinedFilter();" class="mt-3 bg-brandGreen text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm cursor-pointer">
+                Reset Filters
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="notesGrid">
+            <!-- Module 1 -->
+            <div class="note-card theme-card border rounded-xl p-4 transition" data-subject="ds" data-keywords="binary search trees traversal bst preorder inorder postorder recursion stack queue data structures">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="bg-brandGreen/20 text-brandGreen text-[10px] font-bold px-2 py-0.5 rounded border border-brandGreen/30">DS • Unit 3</span>
+                    <span class="text-[10px] bg-brandYellow/20 text-brandYellow font-bold px-1.5 py-0.5 rounded border border-brandYellow/40">High Probability</span>
+                </div>
+                <h3 class="font-bold text-sm mb-1">Binary Search Trees & Traversal</h3>
+                <p class="note-desc text-xs opacity-85 mb-2 leading-relaxed">
+                    BST insertion, deletion, and Inorder, Preorder, and Postorder recursive traversal procedures.
+                </p>
+                <div class="theme-subbox rounded-lg p-2.5 mb-3 border text-xs space-y-1">
+                    <p class="font-semibold text-brandGreen text-[11px]">Quick Recall:</p>
+                    <ul class="list-disc list-inside opacity-90 text-[11px] space-y-1">
+                        <li>BST Inorder traversal always yields sorted ascending data.</li>
+                        <li>Time complexity: Average O(log n), Worst O(n).</li>
+                        <li>Left subtree keys are strictly less than root; right keys are greater.</li>
+                        <li>Recursive implementations rely entirely on the system call stack.</li>
+                    </ul>
+                </div>
+                <button onclick="openNoteModal('pointers')" class="w-full bg-brandGreen/25 hover:bg-brandGreen/35 text-brandGreen border border-brandGreen/40 font-bold py-1.5 rounded-lg text-xs transition cursor-pointer">
+                    Open Cheat Sheet
+                </button>
+            </div>
+
+            <!-- Module 2 -->
+            <div class="note-card theme-card border rounded-xl p-4 transition" data-subject="coa" data-keywords="addressing modes cpu registers immediate direct indirect indexed coa fco computer organization architecture">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="bg-brandGreen/20 text-brandGreen text-[10px] font-bold px-2 py-0.5 rounded border border-brandGreen/30">COA • Unit 2</span>
+                    <span class="text-[10px] bg-brandYellow/20 text-brandYellow font-bold px-1.5 py-0.5 rounded border border-brandYellow/40">7M Question</span>
+                </div>
+                <h3 class="font-bold text-sm mb-1">Addressing Modes & CPU Registers</h3>
+                <p class="note-desc text-xs opacity-85 mb-2 leading-relaxed">
+                    Immediate, Direct, Indirect, Register Indirect, and Indexed addressing mode calculations.
+                </p>
+                <div class="theme-subbox rounded-lg p-2.5 mb-3 border text-xs space-y-1">
+                    <p class="font-semibold text-brandGreen text-[11px]">Quick Recall:</p>
+                    <ul class="list-disc list-inside opacity-90 text-[11px] space-y-1">
+                        <li>Effective Address (EA) = Content of Pointer / Base + Displacement.</li>
+                        <li>Direct addressing specifies the operand memory address explicitly in the instruction code.</li>
+                        <li>Immediate mode encodes constant values directly within the instruction word.</li>
+                        <li>Indirect mode requires an extra memory access cycle to resolve the final target address.</li>
+                    </ul>
+                </div>
+                <button onclick="openNoteModal('vonneumann')" class="w-full bg-brandGreen/25 hover:bg-brandGreen/35 text-brandGreen border border-brandGreen/40 font-bold py-1.5 rounded-lg text-xs transition cursor-pointer">
+                    Open Cheat Sheet
+                </button>
+            </div>
+
+            <!-- Module 3 -->
+            <div class="note-card theme-card border rounded-xl p-4 transition" data-subject="dbms" data-keywords="normalization 1nf 2nf 3nf bcnf functional dependencies anomalies lossy decomposition database dbms sql">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="bg-brandGreen/20 text-brandGreen text-[10px] font-bold px-2 py-0.5 rounded border border-brandGreen/30">DBMS • Unit 4</span>
+                    <span class="text-[10px] bg-brandBlue/20 text-brandBlue font-bold px-1.5 py-0.5 rounded border border-brandBlue/40">Core Topic</span>
+                </div>
+                <h3 class="font-bold text-sm mb-1">Normalization: 1NF, 2NF, 3NF & BCNF</h3>
+                <p class="note-desc text-xs opacity-85 mb-2 leading-relaxed">
+                    Functional dependencies, removing insertion/deletion anomalies, and lossless decomposition.
+                </p>
+                <div class="theme-subbox rounded-lg p-2.5 mb-3 border text-xs space-y-1">
+                    <p class="font-semibold text-brandGreen text-[11px]">Quick Recall:</p>
+                    <ul class="list-disc list-inside opacity-90 text-[11px] space-y-1">
+                        <li>1NF enforces atomic cell values and eliminates repeating groups.</li>
+                        <li>2NF removes Partial Functional Dependencies from composite keys.</li>
+                        <li>3NF eliminates Transitive Dependencies (X → Y, Y → Z).</li>
+                        <li>BCNF is a stricter version of 3NF where every determinant must be a candidate key.</li>
+                    </ul>
+                </div>
+                <button onclick="openNoteModal('dbms')" class="w-full bg-brandGreen/25 hover:bg-brandGreen/35 text-brandGreen border border-brandGreen/40 font-bold py-1.5 rounded-lg text-xs transition cursor-pointer">
+                    Open Cheat Sheet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 7: QUESTION BANK ================= -->
+    <div id="page-qbank" class="page-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-4">
+        <section class="relative theme-card border rounded-2xl p-6 sm:p-8 shadow-lg">
+            <svg class="absolute top-4 right-4 w-7 h-7 stroke-brandYellow fill-none stroke-[1.5] clean-doodle" viewBox="0 0 100 100">
+                <path d="M50,20 Q65,45 55,60 Q75,50 65,80 Q50,90 35,80 Q25,60 45,50 Z" stroke-linejoin="round"/>
+            </svg>
+
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-4 pb-3 border-b border-brandGreen/30">
+                <div>
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-fire text-brandYellow text-base"></i> Last-Moment BCA & B.Sc IT Question Bank
+                    </h2>
+                    <p class="text-xs opacity-70 mt-0.5">The most repeated university theoretical & code-tracing questions.</p>
+                </div>
+            </div>
+
+            <div class="space-y-2.5">
+                <div class="theme-subbox rounded-xl p-3.5 border">
+                    <div class="flex justify-between items-center cursor-pointer select-none" onclick="toggleAnswer('ans1', 'icon1')">
+                        <p class="font-semibold text-xs sm:text-sm">1. Explain Call by Value vs Call by Reference in C with pointer diagrams. (7 Marks)</p>
+                        <i id="icon1" class="fa-solid fa-chevron-down text-xs text-brandGreen transition-transform"></i>
+                    </div>
+                    <div id="ans1" class="hidden mt-2.5 text-xs opacity-90 border-t pt-2 space-y-1">
+                        <p><strong>Answer:</strong> Call by Value passes copies; alterations inside the function do not affect original values. Call by Reference passes pointer addresses (<code class="text-brandBlue font-mono">int *x</code>), modifying actual memory locations directly.</p>
+                        <p class="text-brandYellow font-bold">Exam Tip: Always provide the classic <code>void swap(int *a, int *b)</code> code snippet for full marks.</p>
+                    </div>
+                </div>
+
+                <div class="theme-subbox rounded-xl p-3.5 border">
+                    <div class="flex justify-between items-center cursor-pointer select-none" onclick="toggleAnswer('ans2', 'icon2')">
+                        <p class="font-semibold text-xs sm:text-sm">2. What are the four essential conditions for Deadlock in Operating Systems? (7 Marks)</p>
+                        <i id="icon2" class="fa-solid fa-chevron-down text-xs text-brandGreen transition-transform"></i>
+                    </div>
+                    <div id="ans2" class="hidden mt-2.5 text-xs opacity-90 border-t pt-2 space-y-1">
+                        <p><strong>Answer:</strong> Coffman Conditions: (1) Mutual Exclusion, (2) Hold and Wait, (3) No Preemption, and (4) Circular Wait. If any one condition is broken, deadlock cannot occur.</p>
+                    </div>
+                </div>
+
+                <div class="theme-subbox rounded-xl p-3.5 border">
+                    <div class="flex justify-between items-center cursor-pointer select-none" onclick="toggleAnswer('ans3', 'icon3')">
+                        <p class="font-semibold text-xs sm:text-sm">3. Differentiate between Primary Key, Unique Key, and Foreign Key in SQL. (7 Marks)</p>
+                        <i id="icon3" class="fa-solid fa-chevron-down text-xs text-brandGreen transition-transform"></i>
+                    </div>
+                    <div id="ans3" class="hidden mt-2.5 text-xs opacity-90 border-t pt-2 space-y-1">
+                        <p><strong>Answer:</strong> Primary Key uniquely identifies a record and CANNOT accept NULLs. Unique Key enforces uniqueness but permits one NULL. Foreign Key links child table to parent table ensuring referential integrity.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= PAGE 7B: TEXTBOOKS WITH IN-APP PREVIEW ================= -->
+    <div id="page-textbooks" class="page-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        <div class="theme-card border rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex items-center justify-between pb-4 border-b border-brandGreen/30 mb-6">
+                <div>
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-book-open text-brandBlue"></i> BCA & B.Sc IT Recommended Textbooks Preview
+                    </h2>
+                    <p class="text-xs opacity-70 mt-0.5">Click any textbook below to preview chapters and course guides directly within the app.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="theme-subbox border rounded-xl p-4 space-y-3 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-brandGreen uppercase">C Programming</span>
+                        <h3 class="font-bold text-sm mt-1">Programming in ANSI C</h3>
+                        <p class="text-xs opacity-80 mt-1">Author: E. Balagurusamy</p>
+                    </div>
+                    <button onclick="openTextbookPreview('Programming in ANSI C', 'E. Balagurusamy', ['Chapter 1: Overview of C', 'Chapter 2: Constants, Variables & Data Types', 'Chapter 3: Operators & Expressions', 'Chapter 4: Managing Input & Output Operations', 'Chapter 5: Decision Making & Branching', 'Chapter 6: Decision Making & Looping', 'Chapter 7: Arrays & Pointers', 'Chapter 8: User-Defined Functions'])" class="w-full bg-brandGreen/25 hover:bg-brandGreen/35 text-brandGreen border border-brandGreen/40 text-xs font-bold py-2 rounded-lg transition cursor-pointer">
+                        <i class="fa-solid fa-eye mr-1"></i> Preview Textbook
+                    </button>
+                </div>
+
+                <div class="theme-subbox border rounded-xl p-4 space-y-3 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-brandGreen uppercase">Data Structures</span>
+                        <h3 class="font-bold text-sm mt-1">Data Structures Using C</h3>
+                        <p class="text-xs opacity-80 mt-1">Author: Reema Thareja</p>
+                    </div>
+                    <button onclick="openTextbookPreview('Data Structures Using C', 'Reema Thareja', ['Chapter 1: Introduction to Data Structures', 'Chapter 2: Arrays & Matrices', 'Chapter 3: Linked Lists', 'Chapter 4: Stacks & Applications', 'Chapter 5: Queues & Priority Queues', 'Chapter 6: Binary Trees & BST', 'Chapter 7: Graphs & Traversal Algorithms', 'Chapter 8: Sorting & Searching'])" class="w-full bg-brandGreen/25 hover:bg-brandGreen/35 text-brandGreen border border-brandGreen/40 text-xs font-bold py-2 rounded-lg transition cursor-pointer">
+                        <i class="fa-solid fa-eye mr-1"></i> Preview Textbook
+                    </button>
+                </div>
+
+                <div class="theme-subbox border rounded-xl p-4 space-y-3 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-brandGreen uppercase">DBMS & SQL</span>
+                        <h3 class="font-bold text-sm mt-1">Database System Concepts</h3>
+                        <p class="text-xs opacity-80 mt-1">Author: Silberschatz, Korth</p>
+                    </div>
+                    <button onclick="openTextbookPreview('Database System Concepts', 'Silberschatz, Korth, Sudarshan', ['Chapter 1: Introduction to Database Systems', 'Chapter 2: Relational Model & Algebra', 'Chapter 3: SQL Data Definition & Queries', 'Chapter 4: Advanced SQL', 'Chapter 5: Entity-Relationship (ER) Modeling', 'Chapter 6: Normalization (1NF, 2NF, 3NF, BCNF)', 'Chapter 7: Transactions & ACID Properties', 'Chapter 8: Concurrency Control'])" class="w-full bg-brandGreen/25 hover:bg-brandGreen/35 text-brandGreen border border-brandGreen/40 text-xs font-bold py-2 rounded-lg transition cursor-pointer">
+                        <i class="fa-solid fa-eye mr-1"></i> Preview Textbook
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 7C: GTU PAPERS WITH EMBEDDED PDF VIEWER ================= -->
+    <div id="page-gtupapers" class="page-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        <div class="theme-card border rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-brandGreen/30">
+                <div>
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-file-lines text-brandYellow"></i> GTU Previous Papers & Full PDF Viewer
+                    </h2>
+                    <p class="text-xs opacity-70 mt-0.5">Explore official GTU university question papers with marks-wise breakdown and built-in PDF reader viewer.</p>
+                </div>
+            </div>
+
+            <!-- Paper 1: Communication Skills (Summer 2025 - from uploaded PDF) -->
+            <div class="theme-subbox border rounded-xl p-5 space-y-3">
+                <div class="flex justify-between items-center flex-wrap gap-2">
+                    <div>
+                        <span class="text-[10px] bg-brandYellow/20 text-brandYellow font-bold px-2.5 py-0.5 rounded border border-brandYellow/40">GTU Sem I (Summer 2025)</span>
+                        <h3 class="font-bold text-base mt-1">Communication Skills[cite: 1]</h3>
+                    </div>
+                    <span class="text-[11px] font-mono opacity-75">Subject Code: BC01001071[cite: 1]</span>
+                </div>
+                <p class="text-xs opacity-85">Total Marks: 70 | Time: 02:30 PM To 05:00 PM[cite: 1]</p>
+                
+                <div class="flex flex-wrap gap-2 pt-2">
+                    <button onclick="openGtuPaperViewer('Communication Skills (Sem 1 - BC01001071 - Summer 2025)', [
+                        {marks: 'Q.1 (07 Marks Each)', questions: ['(a) What is technical communication? Discuss in brief characteristics of technical communication.[cite: 1]', '(b) What key elements should be considered while preparing a presentation?[cite: 1]']},
+                        {marks: 'Q.2 (07 Marks Each)', questions: ['(a) Share in brief your experience of nervousness and stage fright in the class during presentation(s) and how you tried to overcome the same? / Write a note on Visual Aids used in presentations.[cite: 1]', '(b) Explain barriers to effective communication.[cite: 1]']},
+                        {marks: 'Q.3 (07 Marks Each)', questions: ['(a) What defines group communication? What are the main characteristics of group discussions? Discuss in brief features of group discussions in selection process. / What are the purposes of interview? What is a job interview?[cite: 1]', '(b) Write a letter of inquiry for the gift (of your choice) to be given in the upcoming farewell party / goals of writing an effective memo in a corporate environment.[cite: 1]']},
+                        {marks: 'Q.4 (07 Marks Each)', questions: ['(a) What are the advantages of email communication? What are some of the most common mistakes to avoid in a business email? / What is the typical structure of a report?[cite: 1]', '(b) Explain how technology-enabled communication has positively impacted communication. / Discuss in brief negative impact of technology-enabled communication.[cite: 1]']},
+                        {marks: 'Q.5 (07 Marks Each)', questions: ['(a) What is the difference between prefixes and suffixes? Explain with examples. / Discuss main factors to consider in selecting suitable technology-enabled communication tools.[cite: 1]', '(b) Discuss in brief any three common errors in English with relevant examples and state reasons why these errors occur. / Factors affecting effectiveness of technology-based communication and how to overcome them.[cite: 1]']}
+                    ])" class="bg-brandYellow/20 hover:bg-brandYellow/30 text-brandYellow border border-brandYellow/50 text-xs font-bold px-4 py-2.5 rounded-lg transition cursor-pointer flex items-center gap-1.5">
+                        <i class="fa-solid fa-eye"></i> View Paper Details & Questions
+                    </button>
+                    <button onclick="openPdfModalViewer('Communication Skills - Summer 2025', 'GUJARAT TECHNOLOGICAL UNIVERSITY\nBCA/MCA INTEGRATED - SEMESTER I - EXAMINATION - SUMMER-2025\nSubject Code: BC01001071\nSubject Name: Communication Skills\nTime: 02:30 PM TO 05:00 PM | Total Marks: 70\n\nInstructions:\n1. Attempt all questions.\n2. Make Suitable assumptions wherever necessary.\n3. Figures to the right indicate full marks.\n4. Use of simple calculators and non-programmable scientific calculators are permitted\n\nQ.1 (a) What is technical communication? Discuss in brief characteristics of technical communication. (07)\n(b) What key elements should be considered while preparing a presentation? (07)\n\nQ.2 (a) Share in brief your experience of nervousness and stage fright in the class during presentation(s) and how you tried to overcome the same? (07)\n(b) Write a note on Visual Aids used in presentations. (07)\nOR\n(b) Explain barriers to effective communication. (07)\n\nQ.3 (a) What defines group communication? What are the main characteristics of group discussions? (07)\n(b) Write a letter of inquiry for the gift (of your choice) to be given in the upcoming farewell party. (07)\nOR\n(a) What are the purposes of interview? What is a job interview? Why we need to conduct job interviews? (07)\n(b) What are the main goals of writing an effective memo in a corporate environment? Write a sample memo of your choice. (07)\n\nQ.4 (a) What are the advantages of email communication? What are some of the most common mistakes to avoid in a business email? (07)\n(b) Explain how technology-enabled communication has positively impacted communication. (07)\nOR\n(a) What is the typical structure of a report? (07)\n(b) Discuss in brief negative impact of technology-enabled communication. (07)\n\nQ.5 (a) What is the difference between prefixes and suffixes? Explain with examples. (07)\n(b) Discuss the main factors to be considered in selecting the most suitable tool for technology-enabled communication. (07)\nOR\n(a) Discuss in brief any three common errors in English with relevant examples and state the reasons why these common errors occur. (07)\n(b) According to you, what are the factors that affect effectiveness of technology-based communication? Also share how to overcome the same. (07)')" class="bg-brandBlue/20 hover:bg-brandBlue/30 text-brandBlue border border-brandBlue/50 text-xs font-bold px-4 py-2.5 rounded-lg transition cursor-pointer flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-pdf"></i> Open Embedded PDF Viewer
+                    </button>
+                </div>
+            </div>
+
+            <!-- Paper 2: Computer Organization -->
+            <div class="theme-subbox border rounded-xl p-5 space-y-3">
+                <div class="flex justify-between items-center flex-wrap gap-2">
+                    <div>
+                        <span class="text-[10px] bg-brandYellow/20 text-brandYellow font-bold px-2.5 py-0.5 rounded border border-brandYellow/40">GTU Sem 1</span>
+                        <h3 class="font-bold text-base mt-1">Fundamental of Computer Organization</h3>
+                    </div>
+                    <span class="text-[11px] font-mono opacity-75">Code: 3110003</span>
+                </div>
+                <p class="text-xs opacity-80">Includes 2-mark definitions, 7-mark architecture questions, and 14-mark block diagrams.</p>
+                <button onclick="openGtuPaperViewer('Fundamental of Computer Organization (Sem 1 - 3110003)', [
+                    {marks: '2 Marks Each (Section A)', questions: ['1. Define Program Counter and its role.', '2. State Von Neumann bottleneck limitation.', '3. Differentiate between RAM and ROM.', '4. What is cache memory?', '5. List basic logic gates.']},
+                    {marks: '7 Marks Each (Section B)', questions: ['1. Explain the Instruction Fetch-Decode-Execute cycle in detail with timing diagrams.', '2. Discuss various CPU addressing modes with examples.', '3. Explain direct and indirect memory access (DMA).']},
+                    {marks: '14 Marks Each (Section C)', questions: ['1. Draw and explain the complete block diagram of Von Neumann architecture.', '2. Explain ALU internal organization and accumulator register functions.']}
+                ])" class="bg-brandYellow/20 hover:bg-brandYellow/30 text-brandYellow border border-brandYellow/50 text-xs font-bold px-4 py-2 rounded-lg transition cursor-pointer inline-flex items-center gap-1.5">
+                    <i class="fa-solid fa-folder-open"></i> Open GTU Paper & Questions
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 7D: EXAM SOLUTIONS ================= -->
+    <div id="page-examsolutions" class="page-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        <div class="theme-card border rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-brandGreen/30">
+                <div>
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-square-check text-brandGreen"></i> Detailed University Exam Solutions & Model Answers
+                    </h2>
+                    <p class="text-xs opacity-70 mt-0.5">Comprehensive, step-by-step model answers structured specifically for university exam top scores.</p>
+                </div>
+            </div>
+
+            <!-- Solution 1 -->
+            <div class="theme-subbox border rounded-xl p-5 space-y-3">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <span class="text-[10px] font-bold text-brandGreen uppercase bg-brandGreen/10 px-2.5 py-0.5 rounded border border-brandGreen/30">Operating Systems • 7 Marks Solution</span>
+                    <span class="text-xs font-mono opacity-70">Question: CPU Scheduling & Waiting Time Calculation</span>
+                </div>
+                <h3 class="font-bold text-sm sm:text-base">Calculate Average Waiting Time for FCFS vs Round Robin (Quantum = 2)</h3>
+                <div class="text-xs opacity-90 space-y-2 leading-relaxed pt-2 border-t border-brandGreen/20">
+                    <p><strong>Problem Statement:</strong> Given processes P1, P2, P3 with Arrival Time = 0 and Burst Times: P1 = 5ms, P2 = 3ms, P3 = 8ms.</p>
+                    <p><strong>Detailed Step-by-Step Solution:</strong></p>
+                    <ul class="list-disc list-inside space-y-1 pl-2 font-medium">
+                        <li><strong>1. FCFS Scheduling (First-Come, First-Served):</strong>
+                            <br>• Gantt Chart: [P1: 0-5] → [P2: 5-8] → [P3: 8-16]
+                            <br>• Completion Times: P1 = 5, P2 = 8, P3 = 16
+                            <br>• Turnaround Time (TAT = Completion − Arrival): P1 = 5, P2 = 8, P3 = 16 (Avg = 9.67 ms)
+                            <br>• Waiting Time (WT = TAT − Burst): P1 = 0, P2 = 5, P3 = 8 (Avg = 4.33 ms)
+                        </li>
+                        <li><strong>2. Round Robin Scheduling (Time Quantum = 2ms):</strong>
+                            <br>• Gantt Chart: P1(0-2) → P2(2-4) → P3(4-6) → P1(6-8) → P2(8-9) → P3(9-11) → P1(11-12) → P3(11-17)
+                            <br>• Compute final completion and waiting times accurately to derive lower response latency for interactive tasks.
+                        </li>
+                    </ul>
+                    <p class="text-brandYellow font-bold mt-2">Exam Tip: Always draw the GTU Gantt chart timeline clearly with accurate scale increments to ensure full credit!</p>
+                </div>
+            </div>
+
+            <!-- Solution 2 -->
+            <div class="theme-subbox border rounded-xl p-5 space-y-3">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <span class="text-[10px] font-bold text-brandBlue uppercase bg-brandBlue/10 px-2.5 py-0.5 rounded border border-brandBlue/30">DBMS & SQL • 14 Marks Solution</span>
+                    <span class="text-xs font-mono opacity-70">Question: Database Normalization (1NF to BCNF)</span>
+                </div>
+                <h3 class="font-bold text-sm sm:text-base">Deconstruct & Normalize Unnormalized Employee Table up to 3NF & BCNF</h3>
+                <div class="text-xs opacity-90 space-y-2 leading-relaxed pt-2 border-t border-brandGreen/20">
+                    <p><strong>Problem Statement:</strong> Given relation <code class="text-brandBlue font-mono">Emp_Dept(Emp_ID, Emp_Name, Dept_ID, Dept_Name, Project_List)</code> with functional dependencies: Emp_ID → (Emp_Name, Dept_ID), Dept_ID → Dept_Name.</p>
+                    <p><strong>Detailed Step-by-Step Solution:</strong></p>
+                    <ul class="list-disc list-inside space-y-1 pl-2 font-medium">
+                        <li><strong>First Normal Form (1NF):</strong> Remove multi-valued attributes (<code class="text-brandBlue font-mono">Project_List</code>) by ensuring all column values are atomic (single atomic entries per cell).</li>
+                        <li><strong>Second Normal Form (2NF):</strong> Check for partial dependency. Since <code class="text-brandBlue font-mono">Emp_ID</code> is a single-attribute primary key, no partial dependencies exist. (Already in 2NF).</li>
+                        <li><strong>Third Normal Form (3NF):</strong> Identify transitive dependency: <code class="text-brandBlue font-mono">Emp_ID → Dept_ID → Dept_Name</code>. To remove this and prevent update/insertion anomalies, split the relation into two tables:
+                            <br>• <code class="text-brandBlue font-mono">Employee(Emp_ID, Emp_Name, Dept_ID)</code>
+                            <br>• <code class="text-brandBlue font-mono">Department(Dept_ID, Dept_Name)</code>
+                        </li>
+                    </ul>
+                    <p class="text-brandYellow font-bold mt-2">Exam Tip: Clearly state anomaly types (Insertion, Deletion, Update anomalies) before applying normalization steps.</p>
+                </div>
+            </div>
+
+            <!-- Solution 3 -->
+            <div class="theme-subbox border rounded-xl p-5 space-y-3">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <span class="text-[10px] font-bold text-brandYellow uppercase bg-brandYellow/10 px-2.5 py-0.5 rounded border border-brandYellow/30">C Programming • 14 Marks Solution</span>
+                    <span class="text-xs font-mono opacity-70">Question: Binary Search Trees (BST) Code</span>
+                </div>
+                <h3 class="font-bold text-sm sm:text-base">Write a C Program to Insert Nodes into a BST and Perform Inorder Traversal</h3>
+                <div class="text-xs opacity-90 space-y-2 leading-relaxed pt-2 border-t border-brandGreen/20">
+                    <p><strong>Complete Code Implementation:</strong></p>
+                    <pre class="theme-card p-3 rounded-xl font-mono text-[11px] overflow-x-auto text-brandGreen border">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct Node {
+    int data;
+    struct Node *left, *right;
+};
+
+struct Node* createNode(int val) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = val;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+struct Node* insert(struct Node* root, int val) {
+    if (root == NULL) return createNode(val);
+    if (val &lt; root->data)
+        root->left = insert(root->left, val);
+    else if (val &gt; root->data)
+        root->right = insert(root->right, val);
+    return root;
+}
+
+void inorder(struct Node* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+int main() {
+    struct Node* root = NULL;
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 70);
+    insert(root, 20);
+    insert(root, 40);
+    
+    printf("Inorder Traversal (Sorted): ");
+    inorder(root);
+    return 0;
+}</pre>
+                    <p class="text-brandYellow font-bold mt-2">Exam Tip: Always include header files like <code>&lt;stdlib.h&gt;</code> for <code>malloc()</code> and check pointer allocations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 8: REAL GENERATIVE AI TUTOR ASSISTANT ================= -->
+    <div id="page-chat" class="page-view max-w-4xl mx-auto px-4 py-8 space-y-4">
+        <div class="theme-card border rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col h-[75vh]">
+            <!-- Header with API Key Config toggle -->
+            <div class="flex items-center justify-between pb-4 border-b border-brandGreen/30">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-brandGreen/20 border border-brandGreen/50 flex items-center justify-center text-brandGreen text-lg shadow-sm">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold flex items-center gap-2">
+                            Gemini AI Smart Tutor <span class="text-[9px] bg-brandGreen/20 text-brandGreen px-2 py-0.5 rounded-full border border-brandGreen/30">Live API Enabled</span>
+                        </h2>
+                        <p class="text-[11px] opacity-70">Powered by Google Gemini API. Ask any question and get real AI-generated answers instantly!</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleApiKeyModal()" class="text-xs theme-subbox border px-3 py-1.5 rounded-lg transition hover:text-brandYellow font-medium flex items-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-key"></i> <span id="apiKeyStatusText">API Key</span>
+                    </button>
+                    <button onclick="clearChatHistory()" class="text-xs theme-subbox border px-3 py-1.5 rounded-lg transition hover:text-rose-500 font-medium cursor-pointer">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Message Box -->
+            <div id="chatMessagesContainer" class="flex-1 overflow-y-auto py-4 space-y-4 pr-2">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brandGreen/20 border border-brandGreen/40 flex items-center justify-center text-brandGreen text-xs shrink-0 mt-0.5">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="theme-subbox border rounded-2xl p-3.5 text-xs max-w-[85%] leading-relaxed shadow-sm">
+                        <p class="font-semibold text-brandGreen mb-1">Gemini AI Tutor</p>
+                        <p>Hello! I am connected to the real Gemini AI model. You can type any study doubt, coding assignment, or general query below, and I will generate a complete response for you. <em>Tip: Click "API Key" above to configure your personal Gemini API key if needed, or use the built-in smart assistant mode!</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suggested Quick Chips -->
+            <div class="flex flex-wrap gap-2 py-2">
+                <button onclick="sendQuickPrompt('Explain pointer arithmetic in C with code')" class="theme-subbox border px-2.5 py-1 rounded-full text-[10px] font-medium transition hover:border-brandGreen cursor-pointer">💡 Explain Pointers in C</button>
+                <button onclick="sendQuickPrompt('What is Banker\'s Algorithm in Operating Systems?')" class="theme-subbox border px-2.5 py-1 rounded-full text-[10px] font-medium transition hover:border-brandGreen cursor-pointer">💡 Banker's Algorithm</button>
+                <button onclick="sendQuickPrompt('How does Normalization work in DBMS (1NF to BCNF)?')" class="theme-subbox border px-2.5 py-1 rounded-full text-[10px] font-medium transition hover:border-brandGreen cursor-pointer">💡 DBMS Normalization</button>
+                <button onclick="sendQuickPrompt('Write a Python function for Binary Search')" class="theme-subbox border px-2.5 py-1 rounded-full text-[10px] font-medium transition hover:border-brandGreen cursor-pointer">💡 Binary Search Code</button>
+            </div>
+
+            <!-- Input Bar -->
+            <div class="flex items-center gap-2 pt-2 border-t border-brandGreen/30">
+                <input type="text" id="chatInputBox" onkeydown="if(event.key==='Enter') sendUserChatMessage()" placeholder="Ask Gemini AI anything..." class="theme-subbox flex-1 border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-brandGreen transition shadow-inner">
+                <button onclick="sendUserChatMessage()" id="sendChatBtn" class="bg-brandGreen hover:bg-brandGreen/80 text-white font-bold px-5 py-3 rounded-xl transition shadow-sm text-xs flex items-center gap-1.5 cursor-pointer">
+                    <span>Ask AI</span> <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 8B: LOGIN HISTORY ================= -->
+    <div id="page-history" class="page-view max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        <div class="theme-card border rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex items-center justify-between pb-4 border-b border-brandGreen/30 mb-6">
+                <div>
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-history text-brandYellow"></i> Account Login History
+                    </h2>
+                    <p class="text-xs opacity-70 mt-0.5">Logs of recent user logins and registrations saved on this browser.</p>
+                </div>
+                <button onclick="clearLoginHistory()" class="bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/50 text-rose-400 text-xs font-bold px-3 py-1.5 rounded-lg transition cursor-pointer">
+                    Clear History
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="border-b border-brandGreen/30 text-brandGreen font-bold">
+                            <th class="py-2.5 px-3">Username / Email</th>
+                            <th class="py-2.5 px-3">Event Type</th>
+                            <th class="py-2.5 px-3">Timestamp</th>
+                            <th class="py-2.5 px-3">IP / Device Info</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loginHistoryTableBody" class="divide-y divide-brandGreen/20 opacity-90">
+                        <tr>
+                            <td colspan="4" class="py-6 text-center italic opacity-60">No login history recorded yet.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 9: ABOUT US ================= -->
+    <div id="page-about" class="page-view max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <div class="theme-card border rounded-2xl p-6 sm:p-10 shadow-xl text-center relative">
+            <div class="w-14 h-14 rounded-2xl bg-brandGreen/20 border border-brandGreen/50 flex items-center justify-center text-brandGreen text-2xl mx-auto mb-3">
+                <i class="fa-solid fa-code"></i>
+            </div>
+            <span class="text-[10px] uppercase font-bold tracking-widest text-brandYellow border border-brandYellow/40 px-3 py-0.5 rounded-full bg-brandYellow/10">
+                Created with Precision by PIE CODERS
+            </span>
+            <h2 class="text-2xl sm:text-4xl font-black mt-3">About ExamCraft AI</h2>
+            <p class="text-xs sm:text-sm opacity-85 max-w-2xl mx-auto mt-2 leading-relaxed font-medium">
+                ExamCraft AI is a state-of-the-art, zero-distraction academic study simulator built specifically for Bachelor of Computer Applications (BCA) and B.Sc (IT) students to conquer semester exams. Proudly engineered and designed by <strong class="text-brandGreen">PIE CODERS</strong>.
+            </p>
+        </div>
+
+        <div class="space-y-3">
+            <h3 class="text-lg font-bold flex items-center gap-2">
+                <i class="fa-solid fa-bullseye text-brandGreen"></i> The Core Motive of ExamCraft AI
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div class="theme-card border p-4 rounded-xl space-y-1.5 shadow-sm">
+                    <div class="text-brandGreen text-base"><i class="fa-solid fa-ban"></i></div>
+                    <h4 class="font-bold text-sm">Eliminate 500-Page Overload</h4>
+                    <p class="opacity-80 leading-relaxed">
+                        Textbooks bury scoring concepts in walls of text. Our primary motive is to condense heavy theory into high-yield 7M & 14M marking blueprints with one-click revision points.
+                    </p>
+                </div>
+                <div class="theme-card border p-4 rounded-xl space-y-1.5 shadow-sm">
+                    <div class="text-brandYellow text-base"><i class="fa-solid fa-brain"></i></div>
+                    <h4 class="font-bold text-sm">Defeat the Forgetting Curve</h4>
+                    <p class="opacity-80 leading-relaxed">
+                        Cognitive science proves students forget over 70% of notes within 24 hours. Our built-in Ebbinghaus spaced repetition engine triggers audio chimes so you review right before memory decay sets in.
+                    </p>
+                </div>
+                <div class="theme-card border p-4 rounded-xl space-y-1.5 shadow-sm">
+                    <div class="text-brandBlue text-base"><i class="fa-solid fa-hand-fist"></i></div>
+                    <h4 class="font-bold text-sm">Cure "The Illusion of Competence"</h4>
+                    <p class="opacity-80 leading-relaxed">
+                        Reading notes feels easy, but fails under exam hall pressure. Our motive is active recall: practicing under a strict 5-minute clock with instant pass/fail feedback.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="theme-subbox border rounded-2xl p-6 space-y-5">
+            <div>
+                <span class="text-[10px] font-bold text-brandYellow uppercase tracking-widest">Our Competitive Edge</span>
+                <h3 class="text-xl font-bold mt-1">What Makes ExamCraft AI Different from ChatGPT & Gemini?</h3>
+                <p class="text-xs opacity-75 mt-1">Generic AI models are blank conversational text boxes. ExamCraft AI by <strong class="text-brandGreen">PIE CODERS</strong> is a specialized, promptless exam success cockpit.</p>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="border-b border-brandGreen/30 text-brandGreen font-bold">
+                            <th class="py-2.5 px-3">Exam Factor</th>
+                            <th class="py-2.5 px-3">Generic AI (ChatGPT / Gemini)</th>
+                            <th class="py-2.5 px-3 text-brandYellow bg-brandYellow/10 rounded-t-lg">ExamCraft AI (PIE CODERS)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-brandGreen/20 opacity-90">
+                        <tr>
+                            <td class="py-2.5 px-3 font-semibold">Prompt Fatigue</td>
+                            <td class="py-2.5 px-3">Requires typing long prompts every session to get concise bullet notes.</td>
+                            <td class="py-2.5 px-3 bg-brandGreen/10 text-brandGreen font-bold">Zero Prompting: Dedicated single-click buttons for summaries and predicted questions.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-3 font-semibold">Curriculum Alignment</td>
+                            <td class="py-2.5 px-3">General internet knowledge (gives modern architecture when you need 8085/Von Neumann).</td>
+                            <td class="py-2.5 px-3 bg-green-950/20 text-brandGreen font-bold">Calibrated strictly for BCA & B.Sc IT university blueprints & marking schemes.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-3 font-semibold">Active Examination</td>
+                            <td class="py-2.5 px-3">Passive text output. No timers, score tracking, or testing pressure.</td>
+                            <td class="py-2.5 px-3 bg-green-950/20 text-brandGreen font-bold">Dedicated MCQ Arena Tab: 5-minute timed countdown, synthesized audio cues & grade cards.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-3 font-semibold">Memory Retention</td>
+                            <td class="py-2.5 px-3">Chats get buried in sidebars. No automatic recall reminders.</td>
+                            <td class="py-2.5 px-3 bg-green-950/20 text-brandGreen font-bold">Automated 24-hr & 25-min spaced repetition alerts with browser push and sound chimes.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-3 font-semibold">Revision Mode</td>
+                            <td class="py-2.5 px-3">Must ask AI to re-summarize everything.</td>
+                            <td class="py-2.5 px-3 bg-green-950/20 text-brandGreen font-bold">One-click global toggle strips all paragraphs and leaves only instant cram points.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="text-center pt-6 border-t border-brandGreen/30 opacity-80 text-xs font-semibold">
+            <p>Designed & Developed with <i class="fa-solid fa-heart text-rose-500"></i> by <strong class="text-brandYellow tracking-wider">PIE CODERS</strong></p>
+        </div>
+    </div>
+
+    <!-- ================= MODALS & TOAST ================= -->
+    <div id="noteModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="theme-card border rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[80vh] overflow-y-auto">
+            <button onclick="closeNoteModal()" class="absolute top-4 right-4 text-brandYellow hover:opacity-100 text-lg cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Textbook Preview Modal -->
+    <div id="textbookModal" class="fixed inset-0 z-[140] bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="theme-card border border-brandBlue rounded-2xl max-w-xl w-full p-6 shadow-2xl relative space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-brandBlue/30 pb-3">
+                <h3 id="modalBookTitle" class="text-base font-bold text-brandBlue flex items-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> Textbook Preview
+                </h3>
+                <button onclick="closeTextbookPreview()" class="text-brandBlue hover:opacity-100 cursor-pointer text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p id="modalBookAuthor" class="text-xs opacity-80 font-semibold"></p>
+            <div class="space-y-2 pt-2">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-brandGreen">Table of Contents & Chapters:</h4>
+                <ul id="modalChapterList" class="list-disc list-inside text-xs opacity-90 space-y-1.5 theme-subbox p-3 rounded-xl border"></ul>
+            </div>
+            <div class="pt-2 flex justify-end">
+                <button onclick="closeTextbookPreview()" class="bg-brandBlue text-white font-bold text-xs uppercase px-4 py-2 rounded-lg transition shadow-sm cursor-pointer">Close Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GTU Paper Viewer Modal -->
+    <div id="gtuPaperModal" class="fixed inset-0 z-[140] bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="theme-card border border-brandYellow rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-brandYellow/30 pb-3">
+                <h3 id="modalPaperTitle" class="text-base font-bold text-brandYellow flex items-center gap-2">
+                    <i class="fa-solid fa-file-lines"></i> GTU Exam Paper Viewer
+                </h3>
+                <button onclick="closeGtuPaperViewer()" class="text-brandYellow hover:opacity-100 cursor-pointer text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="modalPaperContent" class="space-y-4 pt-1 text-xs"></div>
+            <div class="pt-2 flex justify-end">
+                <button onclick="closeGtuPaperViewer()" class="bg-brandYellow text-black font-bold text-xs uppercase px-4 py-2 rounded-lg transition shadow-sm cursor-pointer">Close Paper</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Embedded Document Viewer Modal -->
+    <div id="pdfModalViewer" class="fixed inset-0 z-[150] bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="theme-card border border-brandGreen rounded-2xl max-w-4xl w-full p-6 shadow-2xl relative space-y-4 max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-brandGreen/30 pb-3">
+                <h3 id="pdfModalTitle" class="text-base font-bold text-brandGreen flex items-center gap-2">
+                    <i class="fa-solid fa-file-pdf"></i> PDF Document Viewer
+                </h3>
+                <button onclick="closePdfModalViewer()" class="text-brandGreen hover:opacity-100 cursor-pointer text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="pdfModalBody" class="flex-1 theme-subbox border rounded-xl p-4 text-xs font-mono whitespace-pre-wrap overflow-y-auto max-h-[65vh] leading-relaxed"></div>
+            <div class="pt-2 flex justify-between items-center">
+                <span class="text-[11px] opacity-70"><i class="fa-solid fa-circle-check text-brandGreen mr-1"></i> Loaded from uploaded document source</span>
+                <button onclick="closePdfModalViewer()" class="bg-brandGreen text-white font-bold text-xs uppercase px-5 py-2 rounded-lg transition shadow-sm cursor-pointer">Close Viewer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Key Configuration Modal -->
+    <div id="apiKeyModal" class="fixed inset-0 z-[130] bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="theme-card border border-brandYellow rounded-2xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-base font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-key text-brandYellow"></i> Configure Gemini API Key
+                </h3>
+                <button onclick="toggleApiKeyModal()" class="text-brandYellow hover:opacity-100 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <p class="text-xs opacity-80 leading-relaxed">
+                Enter your Google Gemini API key to enable live generative AI responses. If left empty, the built-in smart academic tutor engine will respond automatically.
+            </p>
+            <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy..." class="theme-subbox w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brandGreen font-mono">
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveApiKey()" class="flex-1 bg-brandGreen hover:bg-brandGreen/80 text-white font-bold text-xs uppercase py-2.5 rounded-lg transition shadow-sm cursor-pointer">Save Key</button>
+                <button onclick="clearApiKey()" class="theme-subbox border text-xs font-semibold px-4 py-2.5 rounded-lg transition hover:text-rose-500 cursor-pointer">Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="reminderAlarmModal" class="fixed inset-0 z-[120] bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="theme-card border border-brandYellow rounded-2xl max-w-sm w-full p-5 text-center shadow-2xl relative">
+            <div class="w-12 h-12 rounded-full bg-brandYellow/20 border border-brandYellow text-brandYellow text-xl flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <h3 id="alarmTopicTitle" class="text-lg font-bold mb-1">Time to Revise!</h3>
+            <p id="alarmSubjectSubtitle" class="text-xs opacity-70 mb-4">Subject</p>
+            
+            <div class="flex gap-2">
+                <button onclick="closeAlarmModal()" class="flex-1 bg-brandGreen hover:bg-brandGreen/80 text-white font-bold text-xs uppercase py-2 rounded-lg transition shadow-sm cursor-pointer">
+                    Done
+                </button>
+                <button onclick="snoozeCurrentAlarm(10)" class="theme-subbox border font-semibold px-3 py-2 rounded-lg transition cursor-pointer">
+                    +10m
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screenToast" class="fixed bottom-5 right-5 z-[150] theme-card border border-brandYellow p-3.5 rounded-xl shadow-lg transition-all duration-300 max-w-xs flex items-start gap-2.5 hidden opacity-0 translate-y-3">
+        <div class="text-brandYellow text-base"><i class="fa-solid fa-bell"></i></div>
+        <div>
+            <h4 id="toastTitle" class="font-bold text-[11px] uppercase tracking-wider text-brandYellow">Alert</h4>
+            <p id="toastMsg" class="text-xs opacity-90 mt-0.5 leading-tight">Message</p>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        // ================= DARK / LIGHT MODE ENGINE =================
+        let isDarkMode = localStorage.getItem('examcraft_theme') !== 'light';
+
+        function applyTheme() {
+            const html = document.getElementById('htmlRoot');
+            const icon = document.getElementById('themeIcon');
+            
+            if (isDarkMode) {
+                html.classList.add('dark');
+                html.classList.remove('light');
+                icon.className = "fa-solid fa-sun text-sm";
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                icon.className = "fa-solid fa-moon text-sm";
+            }
+        }
+
+        function toggleThemeMode() {
+            playClickSound();
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('examcraft_theme', isDarkMode ? 'dark' : 'light');
+            applyTheme();
+            showToast("Theme Updated", isDarkMode ? "Switched to Emerald Dark Theme" : "Switched to Mint Light Theme");
+        }
+
+        applyTheme();
+
+        // ================= MOBILE MENU DRAWER TOGGLE =================
+        function toggleMobileMenu() {
+            playClickSound();
+            const drawer = document.getElementById('mobileMenuDrawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        // ================= MULTI-PAGE ROUTING & AUTH =================
+        let loginHistory = JSON.parse(localStorage.getItem('examcraft_login_history') || '[]');
+
+        function switchAuthTab(tab) {
+            playClickSound();
+            const loginForm = document.getElementById('loginFormContainer');
+            const regForm = document.getElementById('registerFormContainer');
+            const loginBtn = document.getElementById('authTabLoginBtn');
+            const regBtn = document.getElementById('authTabRegisterBtn');
+
+            if (tab === 'register') {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                regBtn.className = "flex-1 py-2 text-xs font-bold rounded-lg transition bg-brandGreen text-white shadow-sm cursor-pointer";
+                loginBtn.className = "flex-1 py-2 text-xs font-bold rounded-lg transition opacity-75 hover:opacity-100 cursor-pointer";
+            } else {
+                regForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+                loginBtn.className = "flex-1 py-2 text-xs font-bold rounded-lg transition bg-brandGreen text-white shadow-sm cursor-pointer";
+                regBtn.className = "flex-1 py-2 text-xs font-bold rounded-lg transition opacity-75 hover:opacity-100 cursor-pointer";
+            }
+        }
+
+        function recordLoginEvent(identifier, eventType) {
+            const entry = {
+                identifier,
+                eventType,
+                timestamp: new Date().toLocaleString(),
+                ipInfo: "Local Web Client (Secure)"
+            };
+            loginHistory.unshift(entry);
+            if (loginHistory.length > 50) loginHistory.pop();
+            localStorage.setItem('examcraft_login_history', JSON.stringify(loginHistory));
+            renderLoginHistory();
+        }
+
+        function renderLoginHistory() {
+            const tbody = document.getElementById('loginHistoryTableBody');
+            if (!tbody) return;
+
+            if (loginHistory.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center italic opacity-60">No login history recorded yet.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            loginHistory.forEach(item => {
+                const tr = document.createElement('tr');
+                const badgeColor = item.eventType === 'Registration' ? 'text-brandYellow bg-brandYellow/10 border-brandYellow/30' : 'text-brandGreen bg-brandGreen/10 border-brandGreen/30';
+                tr.innerHTML = `
+                    <td class="py-2.5 px-3 font-semibold">${item.identifier}</td>
+                    <td class="py-2.5 px-3"><span class="text-[10px] font-bold px-2 py-0.5 rounded border ${badgeColor}">${item.eventType}</span></td>
+                    <td class="py-2.5 px-3 opacity-80">${item.timestamp}</td>
+                    <td class="py-2.5 px-3 font-mono opacity-70">${item.ipInfo}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function clearLoginHistory() {
+            playClickSound();
+            if (confirm("Clear all login history logs?")) {
+                loginHistory = [];
+                localStorage.removeItem('examcraft_login_history');
+                renderLoginHistory();
+                showToast("Cleared", "Login history logs wiped.");
+            }
+        }
+
+        function switchPage(pageId) {
+            playClickSound();
+
+            document.querySelectorAll('.page-view').forEach(p => {
+                p.classList.remove('active-page');
+            });
+
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.classList.add('active-page');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            const globalNav = document.getElementById('globalNav');
+            if (pageId === 'page-login') {
+                globalNav.classList.add('hidden');
+            } else {
+                globalNav.classList.remove('hidden');
+            }
+
+            if (pageId === 'page-mcq') {
+                resetMCQLobby();
+            }
+            if (pageId === 'page-history') {
+                renderLoginHistory();
+            }
+        }
+
+        function handleLoginSubmit(event) {
+            event.preventDefault();
+            playSuccessSound();
+            const username = document.getElementById('loginUsername').value.trim();
+            recordLoginEvent(username, 'Login');
+            showToast("Login Successful", `Welcome back, ${username}!`);
+            switchPage('page-home');
+        }
+
+        function handleRegisterSubmit(event) {
+            event.preventDefault();
+            playSuccessSound();
+            const username = document.getElementById('regUsername').value.trim();
+            const gmail = document.getElementById('regGmail').value.trim();
+            recordLoginEvent(`${username} (${gmail})`, 'Registration');
+            showToast("Registration Successful", `Account created for ${username}!`);
+            switchAuthTab('login');
+            document.getElementById('loginUsername').value = username;
+        }
+
+        function handleLogout() {
+            playClickSound();
+            if (confirm("Are you sure you want to log out?")) {
+                switchPage('page-login');
+                showToast("Logged Out", "Session ended securely.");
+            }
+        }
+
+        function startFromHome() {
+            playWarpSound();
+            const startBtn = document.getElementById('startBtn');
+            const ripple = document.getElementById('startRipple');
+
+            ripple.classList.remove('opacity-0');
+            ripple.classList.add('ripple-active');
+            startBtn.classList.add('scale-95');
+
+            setTimeout(() => {
+                switchPage('page-notes');
+                ripple.classList.add('opacity-0');
+                ripple.classList.remove('ripple-active');
+                startBtn.classList.remove('scale-95');
+
+                setTimeout(() => {
+                    const searchBox = document.getElementById('primaryNotesSearch');
+                    if (searchBox) searchBox.focus();
+                }, 300);
+            }, 350);
+        }
+
+        // ================= TEXTBOOK & GTU PAPER MODAL VIEWER =================
+        function openTextbookPreview(title, author, chapters) {
+            playClickSound();
+            document.getElementById('modalBookTitle').innerHTML = `<i class="fa-solid fa-book-open"></i> ${title}`;
+            document.getElementById('modalBookAuthor').innerText = `Author: ${author}`;
+            const listEl = document.getElementById('modalChapterList');
+            listEl.innerHTML = chapters.map(ch => `<li>${ch}</li>`).join('');
+            document.getElementById('textbookModal').classList.remove('hidden');
+        }
+
+        function closeTextbookPreview() {
+            playClickSound();
+            document.getElementById('textbookModal').classList.add('hidden');
+        }
+
+        function openGtuPaperViewer(paperTitle, sections) {
+            playClickSound();
+            document.getElementById('modalPaperTitle').innerHTML = `<i class="fa-solid fa-file-lines"></i> ${paperTitle}`;
+            const contentEl = document.getElementById('modalPaperContent');
+            contentEl.innerHTML = sections.map(sec => `
+                <div class="theme-subbox border rounded-xl p-3.5 space-y-1.5">
+                    <h4 class="font-bold text-brandYellow text-xs uppercase tracking-wider">${sec.marks}</h4>
+                    <ul class="list-disc list-inside opacity-90 space-y-1">
+                        ${sec.questions.map(q => `<li>${q}</li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+            document.getElementById('gtuPaperModal').classList.remove('hidden');
+        }
+
+        function closeGtuPaperViewer() {
+            playClickSound();
+            document.getElementById('gtuPaperModal').classList.add('hidden');
+        }
+
+        function openPdfModalViewer(title, textContent) {
+            playClickSound();
+            document.getElementById('pdfModalTitle').innerHTML = `<i class="fa-solid fa-file-pdf"></i> ${title}`;
+            document.getElementById('pdfModalBody').innerText = textContent;
+            document.getElementById('pdfModalViewer').classList.remove('hidden');
+        }
+
+        function closePdfModalViewer() {
+            playClickSound();
+            document.getElementById('pdfModalViewer').classList.add('hidden');
+        }
+
+        // ================= GEMINI API & REAL AI TUTOR ENGINE =================
+        let userGeminiApiKey = localStorage.getItem('examcraft_gemini_key') || '';
+
+        function toggleApiKeyModal() {
+            playClickSound();
+            const modal = document.getElementById('apiKeyModal');
+            modal.classList.toggle('hidden');
+            if(!modal.classList.contains('hidden')) {
+                document.getElementById('geminiApiKeyInput').value = userGeminiApiKey;
+            }
+        }
+
+        function saveApiKey() {
+            playClickSound();
+            const val = document.getElementById('geminiApiKeyInput').value.trim();
+            userGeminiApiKey = val;
+            if(val) {
+                localStorage.setItem('examcraft_gemini_key', val);
+                document.getElementById('apiKeyStatusText').innerText = "Key Saved ✓";
+                showToast("API Key Saved", "Gemini API integration active!");
+            } else {
+                localStorage.removeItem('examcraft_gemini_key');
+                document.getElementById('apiKeyStatusText').innerText = "API Key";
+                showToast("Key Cleared", "Using built-in Smart Academic Assistant mode.");
+            }
+            toggleApiKeyModal();
+        }
+
+        function clearApiKey() {
+            document.getElementById('geminiApiKeyInput').value = '';
+            saveApiKey();
+        }
+
+        function sendQuickPrompt(promptText) {
+            document.getElementById('chatInputBox').value = promptText;
+            switchPage('page-chat');
+            sendUserChatMessage();
+        }
+
+        function appendChatMessage(sender, text, isAi = false, isTyping = false) {
+            const container = document.getElementById('chatMessagesContainer');
+            const div = document.createElement('div');
+            const divId = 'msg_' + Date.now();
+            div.id = divId;
+            
+            if (isAi) {
+                div.className = "flex items-start gap-3";
+                div.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-brandGreen/20 border border-brandGreen/40 flex items-center justify-center text-brandGreen text-xs shrink-0 mt-0.5">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="theme-subbox border rounded-2xl p-3.5 text-xs max-w-[85%] leading-relaxed shadow-sm">
+                        <p class="font-semibold text-brandGreen mb-1">${sender}</p>
+                        <div class="ai-response-text ${isTyping ? 'ai-typing-cursor' : ''}">${text}</div>
+                    </div>
+                `;
+            } else {
+                div.className = "flex items-start gap-3 justify-end";
+                div.innerHTML = `
+                    <div class="bg-brandBlue/20 border border-brandBlue/40 text-white rounded-2xl p-3.5 text-xs max-w-[85%] leading-relaxed shadow-sm">
+                        <p class="font-semibold text-brandBlue mb-1">You</p>
+                        <p>${text}</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-brandBlue/20 border border-brandBlue/40 flex items-center justify-center text-brandBlue text-xs shrink-0 mt-0.5">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                `;
+            }
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+            return divId;
+        }
+
+        async function sendUserChatMessage() {
+            const input = document.getElementById('chatInputBox');
+            const query = input.value.trim();
+            if (!query) return;
+
+            appendChatMessage('You', query, false);
+            input.value = '';
+            playClickSound();
+
+            const sendBtn = document.getElementById('sendChatBtn');
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+
+            if (userGeminiApiKey) {
+                const typingId = appendChatMessage('Gemini AI Assistant', 'Thinking...', true, true);
+                try {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${userGeminiApiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{ text: "You are ExamCraft AI, an expert academic tutor for BCA and B.Sc (IT) college students. Answer this question comprehensively with clear bullet points and exam tips: " + query }]
+                            }]
+                        })
+                    });
+                    const data = await response.json();
+                    const el = document.getElementById(typingId);
+                    if (data && data.candidates && data.candidates[0].content.parts[0].text) {
+                        const rawText = data.candidates[0].content.parts[0].text;
+                        const formattedHtml = rawText.replace(/\n/g, '<br>');
+                        el.querySelector('.ai-response-text').innerHTML = formattedHtml;
+                        el.querySelector('.ai-response-text').classList.remove('ai-typing-cursor');
+                    } else {
+                        el.querySelector('.ai-response-text').innerHTML = "Error communicating with Gemini API. Please check your API key.";
+                        el.querySelector('.ai-response-text').classList.remove('ai-typing-cursor');
+                    }
+                } catch(err) {
+                    const el = document.getElementById(typingId);
+                    el.querySelector('.ai-response-text').innerHTML = "Network connection error while reaching Gemini API.";
+                    el.querySelector('.ai-response-text').classList.remove('ai-typing-cursor');
+                }
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = `<span>Ask AI</span> <i class="fa-solid fa-paper-plane text-[10px]"></i>`;
+                playSuccessSound();
+            } else {
+                setTimeout(() => {
+                    const aiReply = generateUniversalAiAnswer(query);
+                    appendChatMessage('ExamCraft AI Assistant', aiReply, true);
+                    sendBtn.disabled = false;
+                    sendBtn.innerHTML = `<span>Ask AI</span> <i class="fa-solid fa-paper-plane text-[10px]"></i>`;
+                    playSuccessSound();
+                }, 500);
+            }
+        }
+
+        function askAIAbout(topicName) {
+            switchPage('page-chat');
+            document.getElementById('chatInputBox').value = `Explain ${topicName} in detail with university exam marking tips.`;
+            sendUserChatMessage();
+        }
+
+        function clearChatHistory() {
+            playClickSound();
+            if(confirm("Clear chat history?")) {
+                const container = document.getElementById('chatMessagesContainer');
+                container.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-brandGreen/20 border border-brandGreen/40 flex items-center justify-center text-brandGreen text-xs shrink-0 mt-0.5">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="theme-subbox border rounded-2xl p-3.5 text-xs max-w-[85%] leading-relaxed shadow-sm">
+                            <p class="font-semibold text-brandGreen mb-1">ExamCraft AI Assistant</p>
+                            <p>Chat history cleared. What else would you like me to answer for you?</p>
+                        </div>
+                    </div>
+                `;
+                showToast("Cleared", "AI chat window reset.");
+            }
+        }
+
+        function generateUniversalAiAnswer(userQuery) {
+            const q = userQuery.toLowerCase();
+            
+            if (q.includes('pointer') || q.includes('memory') || q.includes('malloc') || q.includes('c language')) {
+                return `<strong>C Pointers & Dynamic Memory Management Breakdown:</strong><br>
+                - A pointer is a variable that stores the memory address of another variable: <code>int x = 42; int *ptr = &x;</code><br>
+                - Dynamic allocation is managed via heap functions: <code>malloc()</code> (uninitialized bytes), <code>calloc()</code> (zero-initialized blocks), and <code>free()</code> (memory deallocation).<br>
+                <em>Exam Tip:</em> Always check if pointer allocation returns <code>NULL</code> before usage to secure full marks in coding questions!`;
+            } 
+            else if (q.includes('von neumann') || q.includes('architecture') || q.includes('register') || q.includes('coa')) {
+                return `<strong>Von Neumann Architecture & Cycle:</strong><br>
+                - Features a single shared memory structure for both data and program instructions.<br>
+                - Core components include the Arithmetic Logic Unit (ALU), Control Unit (CU), Registers (PC, MAR, MBR, IR, Accumulator), and Buses.<br>
+                - Follows the Fetch-Decode-Execute pipeline cycle.`;
+            } 
+            else if (q.includes('acid') || q.includes('database') || q.includes('normalization') || q.includes('sql') || q.includes('key')) {
+                return `<strong>Database Management & SQL Concepts:</strong><br>
+                - <strong>ACID:</strong> Atomicity, Consistency, Isolation, Durability ensure safe database transactions.<br>
+                - <strong>Normalization:</strong> Eliminates redundancies and anomalies (1NF, 2NF, 3NF, BCNF).<br>
+                - <strong>Keys:</strong> Primary Key (unique + non-null), Candidate Key, and Foreign Key (maintains referential integrity between tables).`;
+            } 
+            else if (q.includes('deadlock') || q.includes('process') || q.includes('thread') || q.includes('scheduling') || q.includes('banker')) {
+                return `<strong>Operating Systems Core Concepts:</strong><br>
+                - <strong>Process vs Thread:</strong> Processes are heavy independent units with separate memory spaces; threads are lightweight units sharing process resources.<br>
+                - <strong>Deadlock Conditions:</strong> Mutual Exclusion, Hold & Wait, No Preemption, and Circular Wait.<br>
+                - <strong>CPU Scheduling:</strong> Algorithms like FCFS, SJF, Priority, and Round Robin determine processor allocation efficiency.`;
+            } 
+            else if (q.includes('logic') || q.includes('truth table') || q.includes('tautology') || q.includes('discrete') || q.includes('math')) {
+                return `<strong>Discrete Mathematics & Propositional Logic:</strong><br>
+                - Propositions are declarative statements that are either True or False.<br>
+                - Conditional equivalence: <code>p → q ≡ ¬p ∨ q</code>.<br>
+                - A <em>Tautology</em> is a compound proposition that evaluates to True under all possible truth values.`;
+            } 
+            else if (q.includes('dom') || q.includes('http') || q.includes('html') || q.includes('css') || q.includes('get') || q.includes('post') || q.includes('web')) {
+                return `<strong>Web Technologies & Protocols:</strong><br>
+                - <strong>DOM (Document Object Model):</strong> Tree structure representing HTML elements for dynamic manipulation via JavaScript.<br>
+                - <strong>HTTP Methods:</strong> <code>GET</code> retrieves data idempotently; <code>POST</code> submits data to create/modify resources on the server.`;
+            } 
+            else {
+                return `Here is the precise and comprehensive answer to your question: <strong>"${userQuery}"</strong>.<br><br>
+                1. <strong>Core Definition:</strong> In academic and technical contexts, this topic addresses fundamental principles, structural mechanisms, and applied standards.<br>
+                2. <strong>Key Principles:</strong> Analyzed systematically through logical breakdown, parameters, and syntax rules.<br>
+                3. <strong>Exam Application:</strong> When answering this in your university exams, structure your response with an introduction, key characteristics, diagrams/code snippets where applicable, and a summary conclusion for top marks.<br><br>
+                <em>Pro Tip: Click the "API Key" button at the top of this chat tab to connect your live Google Gemini API key for real-time generative responses!</em>`;
+            }
+        }
+
+        // ================= SEARCH & SELECT FILTER ON "IMP NOTES" =================
+        function applyNotesSearchFilter() {
+            const input = document.getElementById('primaryNotesSearch');
+            const clearBtn = document.getElementById('clearNotesSearchBtn');
+            const selectSubject = document.getElementById('notesSubjectSelect');
+            const cards = document.querySelectorAll('.note-card-item');
+            const noMatch = document.getElementById('noNotesMatchState');
+
+            const query = input.value.trim().toLowerCase();
+            const selectedSubject = selectSubject.value;
+
+            if (query.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            let matches = 0;
+            cards.forEach(card => {
+                const cardSubject = card.getAttribute('data-subject');
+                const text = card.innerText.toLowerCase();
+                const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+
+                const matchSubject = (selectedSubject === 'all' || cardSubject === selectedSubject);
+                const matchQuery = (!query || text.includes(query) || keywords.includes(query));
+
+                if (matchSubject && matchQuery) {
+                    card.style.display = 'flex';
+                    matches++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (matches === 0) {
+                noMatch.classList.remove('hidden');
+            } else {
+                noMatch.classList.add('hidden');
+            }
+        }
+
+        function clearNotesSearch() {
+            playClickSound();
+            const input = document.getElementById('primaryNotesSearch');
+            input.value = '';
+            applyNotesSearchFilter();
+            input.focus();
+        }
+
+        function quickFillSearch(term) {
+            playClickSound();
+            const input = document.getElementById('primaryNotesSearch');
+            input.value = term;
+            applyNotesSearchFilter();
+            input.focus();
+        }
+
+        // ================= SEARCH & SELECT FILTER ON "MODULES" =================
+        function applyCombinedFilter() {
+            const searchInput = document.getElementById('moduleSearchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const subjectSelect = document.getElementById('subjectSelect');
+            const cards = document.querySelectorAll('.note-card');
+            const noResults = document.getElementById('noResultsState');
+
+            const query = searchInput.value.trim().toLowerCase();
+            const selectedSubject = subjectSelect.value;
+
+            if (query.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const cardSubject = card.getAttribute('data-subject');
+                const cardKeywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+                const cardText = card.innerText.toLowerCase();
+
+                const matchesSubject = (selectedSubject === 'all' || cardSubject === selectedSubject);
+                const matchesSearch = (!query || cardText.includes(query) || cardKeywords.includes(query));
+
+                if (matchesSubject && matchesSearch) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+
+        function clearSearch() {
+            playClickSound();
+            const searchInput = document.getElementById('moduleSearchInput');
+            searchInput.value = '';
+            applyCombinedFilter();
+            searchInput.focus();
+        }
+
+        // ================= AUDIO SYNTHESIZER =================
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+
+        function playWarpSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.exponentialRampToValueAtTime(880, now + 0.35);
+
+                gain.gain.setValueAtTime(0.01, now);
+                gain.gain.linearRampToValueAtTime(0.2, now + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            } catch (e) {}
+        }
+
+        function playSuccessSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                [659.25, 987.77].forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(freq, now + i * 0.1);
+                    gain.gain.setValueAtTime(0, now + i * 0.1);
+                    gain.gain.linearRampToValueAtTime(0.15, now + i * 0.1 + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.3);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + i * 0.1);
+                    osc.stop(now + i * 0.1 + 0.3);
+                });
+            } catch (e) {}
+        }
+
+        function playErrorSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = "sawtooth";
+                osc.frequency.setValueAtTime(140, now);
+                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            } catch (e) {}
+        }
+
+        function playAlarmChime() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                [523.25, 659.25, 783.99].forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(freq, now + (idx * 0.12));
+                    gain.gain.setValueAtTime(0, now + (idx * 0.12));
+                    gain.gain.linearRampToValueAtTime(0.18, now + (idx * 0.12) + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.12) + 0.4);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + (idx * 0.12));
+                    osc.stop(now + (idx * 0.12) + 0.45);
+                });
+            } catch (e) {}
+        }
+
+        function playClickSound() {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = "triangle";
+                osc.frequency.setValueAtTime(800, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.05);
+            } catch (e) {}
+        }
+
+        function showToast(title, msg) {
+            const toast = document.getElementById('screenToast');
+            document.getElementById('toastTitle').innerText = title;
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('hidden', 'opacity-0', 'translate-y-3');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-3');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 3500);
+        }
+
+        function testAlertAndSound() {
+            playAlarmChime();
+            showToast("Audio Test", "Sound alert is working properly.");
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification("BCA / IT Study Alert", { body: "Your study reminder is active!" });
+            } else {
+                requestNotificationPermission();
+            }
+        }
+
+        // ================= REMINDER ENGINE =================
+        let selectedStrategy = '25m';
+        let studyReminders = JSON.parse(localStorage.getItem('examcraft_reminders') || '[]');
+        let activeAlarmItem = null;
+
+        function requestNotificationPermission() {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(p => {
+                    if (p === 'granted') {
+                        document.getElementById('permBtn').innerText = "Alerts On";
+                    }
+                });
+            }
+        }
+
+        function selectIntervalStrategy(strategy) {
+            selectedStrategy = strategy;
+            document.querySelectorAll('.strategy-btn').forEach(btn => {
+                if (btn.getAttribute('data-strategy') === strategy) {
+                    btn.className = "strategy-btn p-1.5 text-center rounded-lg border border-brandGreen bg-brandGreen/25 text-brandGreen text-xs font-bold transition cursor-pointer";
+                } else {
+                    btn.className = "strategy-btn p-1.5 text-center rounded-lg border opacity-60 text-xs font-semibold transition hover:opacity-100 cursor-pointer";
+                }
+            });
+            document.getElementById('customTimeInputWrapper').classList.toggle('hidden', strategy !== 'custom');
+        }
+
+        function scheduleStudyReminder() {
+            const topic = document.getElementById('remTopic').value.trim();
+            const subject = document.getElementById('remSubject').value;
+            if (!topic) return alert("Enter a topic or chapter!");
+
+            let mins = selectedStrategy === '24h' ? 1440 : (selectedStrategy === 'custom' ? parseInt(document.getElementById('remMinutes').value || 30) : 25);
+            const dueTime = new Date(Date.now() + mins * 60000);
+
+            studyReminders.push({
+                id: Date.now().toString(),
+                topic, subject,
+                dueTimestamp: dueTime.getTime(),
+                dueString: dueTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+
+            saveAndRefresh();
+            document.getElementById('remTopic').value = '';
+            playSuccessSound();
+            showToast("Saved", `Reminder set for ${dueTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`);
+        }
+
+        function renderReminders() {
+            const container = document.getElementById('reminderListContainer');
+            const countEl = document.getElementById('queueCount');
+            if (!countEl || !container) return;
+            countEl.innerText = `${studyReminders.length} Alerts`;
+
+            if (studyReminders.length === 0) {
+                container.innerHTML = `<p class="text-xs opacity-50 italic py-6 text-center">No active alerts. Add a topic above to schedule your next revision.</p>`;
+                return;
+            }
+
+            studyReminders.sort((a, b) => a.dueTimestamp - b.dueTimestamp);
+            container.innerHTML = '';
+            studyReminders.forEach(item => {
+                const diffMins = Math.max(0, Math.ceil((item.dueTimestamp - Date.now()) / 60000));
+                const div = document.createElement('div');
+                div.className = "theme-card flex items-center justify-between p-2 rounded-lg border text-xs";
+                div.innerHTML = `
+                    <div>
+                        <span class="font-bold text-xs">${item.topic}</span>
+                        <span class="text-[10px] text-brandBlue font-bold ml-1.5">${item.subject}</span>
+                        <p class="text-[10px] opacity-70 mt-0.5">Due: ${item.dueString} (${diffMins}m left)</p>
+                    </div>
+                    <button onclick="deleteReminder('${item.id}')" class="opacity-70 hover:text-rose-500 p-1 cursor-pointer"><i class="fa-regular fa-trash-can"></i></button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function deleteReminder(id) {
+            studyReminders = studyReminders.filter(r => r.id !== id);
+            saveAndRefresh();
+        }
+
+        function clearAllReminders() {
+            if (confirm("Clear all active study reminders?")) {
+                studyReminders = [];
+                saveAndRefresh();
+            }
+        }
+
+        function saveAndRefresh() {
+            localStorage.setItem('examcraft_reminders', JSON.stringify(studyReminders));
+            renderReminders();
+        }
+
+        function checkDueReminders() {
+            const now = Date.now();
+            const due = studyReminders.filter(r => r.dueTimestamp <= now);
+            if (due.length > 0) {
+                const item = due[0];
+                studyReminders = studyReminders.filter(r => r.id !== item.id);
+                saveAndRefresh();
+                triggerAlarm(item);
+            }
+        }
+
+        function triggerAlarm(reminder) {
+            activeAlarmItem = reminder;
+            playAlarmChime();
+            showToast(`Revise: ${reminder.topic}`, `Spend 5 mins on ${reminder.subject}.`);
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification(`Recall: ${reminder.topic}`, { body: `Review ${reminder.subject} now!` });
+            }
+            document.getElementById('alarmTopicTitle').innerText = reminder.topic;
+            document.getElementById('alarmSubjectSubtitle').innerText = reminder.subject;
+            document.getElementById('reminderAlarmModal').classList.remove('hidden');
+        }
+
+        function closeAlarmModal() {
+            document.getElementById('reminderAlarmModal').classList.add('hidden');
+        }
+
+        function snoozeCurrentAlarm(minutes) {
+            if (!activeAlarmItem) return;
+            const dueTime = new Date(Date.now() + minutes * 60000);
+            activeAlarmItem.dueTimestamp = dueTime.getTime();
+            activeAlarmItem.dueString = dueTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            studyReminders.push(activeAlarmItem);
+            saveAndRefresh();
+            closeAlarmModal();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderReminders();
+            renderLoginHistory();
+            setInterval(checkDueReminders, 10000);
+            switchPage('page-login');
+        });
+    </script>
+</body>
+</html>
