@@ -1,0 +1,60 @@
+
+<div>
+    <div class="flex justify-between items-center mb-1">
+        <label class="block text-xs font-bold opacity-90"><i class="fa-solid fa-key text-brandYellow mr-1"></i> Password</label>
+        <button type="button" onclick="openForgotPasswordModal()" class="text-[11px] font-semibold text-brandBlue hover:underline cursor-pointer">
+            Forgot Password?
+        </button>
+    </div>
+    <input type="password" id="loginPassword" required placeholder="••••••••" class="theme-subbox w-full border rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-brandGreen transition shadow-inner">
+</div>
+
+<!-- ================= FORGOT PASSWORD MODAL ================= -->
+<div id="forgotPasswordModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+    <div class="theme-card border-2 rounded-2xl p-6 max-w-sm w-full shadow-2xl relative space-y-4 mx-4">
+        <!-- Close Button -->
+        <button onclick="closeForgotPasswordModal()" class="absolute top-4 right-4 text-xs opacity-70 hover:opacity-100 p-1 cursor-pointer">
+            <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+
+        <div class="text-center space-y-1">
+            <div class="w-10 h-10 rounded-xl bg-brandBlue/20 text-brandBlue flex items-center justify-center mx-auto text-lg border border-brandBlue/40">
+                <i class="fa-solid fa-lock-open"></i>
+            </div>
+            <h3 class="text-lg font-black">Reset Password</h3>
+            <p class="text-xs opacity-75">Enter your registered email to receive a 6-digit OTP code.</p>
+        </div>
+
+        <!-- Step 1: Email Verification Form -->
+        <form id="otpRequestForm" onsubmit="handleSendOTP(event)" class="space-y-3">
+            <div>
+                <label class="block text-xs font-bold mb-1 opacity-90"><i class="fa-solid fa-envelope text-brandBlue mr-1"></i> Registered Email</label>
+                <input type="email" id="resetEmailInput" required placeholder="yourname@gmail.com" class="theme-subbox w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brandGreen transition">
+            </div>
+            <button type="submit" id="sendOtpBtn" class="w-full bg-brandBlue hover:bg-brandBlue/90 text-white font-bold text-xs py-2.5 rounded-xl transition shadow-md cursor-pointer">
+                Send One-Time Code
+            </button>
+        </form>
+
+        <!-- Step 2: OTP Entry and New Password Form (Initially Hidden) -->
+        <form id="otpVerifyForm" onsubmit="handleResetPassword(event)" class="space-y-3 hidden">
+            <div class="bg-brandGreen/10 border border-brandGreen/30 rounded-lg p-2 text-center text-[11px] text-brandGreen font-medium" id="otpNotificationText">
+                Code sent to email! Check your inbox.
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold mb-1 opacity-90"><i class="fa-solid fa-shield-halved text-brandYellow mr-1"></i> 6-Digit OTP</label>
+                <input type="text" id="otpCodeInput" required maxlength="6" placeholder="123456" class="theme-subbox w-full border rounded-xl px-3 py-2 text-xs text-center font-mono tracking-widest focus:outline-none focus:border-brandGreen transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold mb-1 opacity-90"><i class="fa-solid fa-key text-brandGreen mr-1"></i> New Password</label>
+                <input type="password" id="newPasswordInput" required placeholder="••••••••" class="theme-subbox w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brandGreen transition">
+            </div>
+
+            <button type="submit" class="w-full bg-brandGreen hover:bg-brandGreen/90 text-white font-bold text-xs py-2.5 rounded-xl transition shadow-md cursor-pointer">
+                Update Password
+            </button>
+        </form>
+    </div>
+</div>
